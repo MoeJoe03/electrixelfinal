@@ -32,8 +32,8 @@
   --cultured: hsl(0, 0%, 93%);
   --black_10: hsla(0, 0%, 0%, 0.1);
   --black_5: hsla(0, 0%, 0%, 0.05);
-  --white-1: hsl(0, 0%, 0%);
-  --white-2: hsl(0, 0%, 0%);
+  --white-1: hsl(0, 0%, 100%);
+  --white-2: hsl(0, 14%, 98%);
   --black: hsl(0, 0%, 0%);
 
   /**
