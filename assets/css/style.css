@@ -1122,6 +1122,24 @@ textarea.input-field {
 
   .service-card .h3 { --fs-3: 2.5rem; }
 
+  .services-list {
+    margin-top: 20px;
+  }
+  
+  .services-list ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .services-list li {
+    background: var(--cultured);
+    padding: 5px 15px;
+    border-radius: var(--radius-5);
+    font-size: var(--fs-6);
+  }
+
 
 
   /**
@@ -1174,4 +1192,56 @@ textarea.input-field {
 
   .contact-card .card-icon { padding: 15px; }
 
+}
+
+/* Popup Modal Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition-2);
+}
+
+.popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup-content {
+  background-color: var(--white-1);
+  width: 90%;
+  max-width: 800px;
+  padding: 30px;
+  border-radius: var(--radius-8);
+  position: relative;
+  transform: scale(0.9);
+  transition: var(--transition-2);
+}
+
+.popup-overlay.active .popup-content {
+  transform: scale(1);
+}
+
+.close-popup {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--eerie-black);
+}
+
+.popup-image {
+  width: 100%;
+  border-radius: var(--radius-5);
+  margin-bottom: 20px;
 }
