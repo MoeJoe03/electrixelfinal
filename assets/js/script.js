@@ -57,60 +57,98 @@ window.addEventListener("scroll", function () {
   }
 });
 
-/*******************************
- * PROJECT DETAILS POPUP CODE
- * Add this new section below all
- * your existing code
- *******************************/
-
+// 1. Project Data - Add your project details here
 const projectDetails = {
+  // Existing project (keep this)
   "designing-a-better-cinema-experience": {
-    description: "Full case study about improving cinema UX. We redesigned the ticket purchasing flow resulting in a 35% increase in customer satisfaction.",
-    services: ["UX Design", "User Research", "Prototyping"]
+    description: "We redesigned the ticket purchasing flow...",
+    services: ["UX Design", "User Research"],
+    images: [
+      "./assets/images/project-1.jpg",
+      "./assets/images/cinema-process.jpg"
+    ]
   },
-  "building-design-process-within-teams": {
-    description: "Implemented agile design processes across 5 product teams, reducing production time by 40%.",
-    services: ["Process Design", "Team Training"]
+
+  // ▼ Add new projects below ▼
+  
+  "building-design-process": {
+    description: "Created an agile workflow for design teams, reducing project time by 30%.",
+    services: ["Process Design", "Team Training"],
+    images: [
+      "./assets/images/project-2.jpg",
+      "./assets/images/team-workshop.jpg"
+    ]
   },
-  // Add details for other projects...
+
+  "e-commerce-redesign": {
+    description: "Redesigned checkout process increased conversions by 22%.",
+    services: ["UI Design", "A/B Testing"],
+    images: [
+      "./assets/images/project-3.jpg",
+      "./assets/images/checkout-flow.jpg",
+      "./assets/images/mobile-version.jpg"
+    ]
+  },
+
+  "mobile-app-development": {
+    description: "Built a fitness app with 50k+ downloads in first month.",
+    services: ["App Development", "UX Design"],
+    images: [
+      "./assets/images/project-4.jpg",
+      "./assets/images/app-screens.jpg"
+    ]
+  }
+  // Add more as needed...
 };
 
+// 2. Make "View Details" buttons work
 document.querySelectorAll('.project-card .btn-primary').forEach(btn => {
   btn.addEventListener('click', function(e) {
     e.preventDefault();
-    const projectId = this.closest('.project-card').querySelector('img').alt
+    
+    // 3. Get project ID from image alt text
+    const projectId = this.closest('.project-card')
+      .querySelector('img').alt
       .toLowerCase()
       .replace(/\s+/g, '-')
       .replace(/[^\w-]+/g, '');
       
     const project = projectDetails[projectId];
-    if (!project) return;
-
+    
+    // 4. Create popup HTML
     const popupHTML = `
-      <div class="popup-overlay active">
-        <div class="popup-content">
-          <span class="close-popup">&times;</span>
-          <h3 class="h3">${this.closest('.project-card').querySelector('.card-title').textContent}</h3>
-          <p class="card-subtitle">${this.closest('.project-card').querySelector('.card-subtitle').textContent}</p>
-          <p class="section-text">${project.description}</p>
-          <div class="services-list">
-            <h4 class="h4">Services:</h4>
-            <ul>
-              ${project.services.map(service => `<li>${service}</li>`).join('')}
-            </ul>
-          </div>
+    <div class="popup-overlay">
+      <div class="popup-content">
+        <span class="close-popup">&times;</span>
+        <h3>${this.closest('.project-card').querySelector('.card-title').textContent}</h3>
+        
+        <div class="image-gallery">
+          ${project.images.map(img => `
+            <img src="${img}" class="popup-img">
+          `).join('')}
+        </div>
+        
+        <p>${project.description}</p>
+        
+        <div class="services">
+          <h4>Services:</h4>
+          <ul>
+            ${project.services.map(service => `<li>${service}</li>`).join('')}
+          </ul>
         </div>
       </div>
+    </div>
     `;
     
+    // 5. Add to page
     document.body.insertAdjacentHTML('beforeend', popupHTML);
     
+    // 6. Close when clicking X or outside
     document.querySelector('.popup-overlay').addEventListener('click', function(e) {
-      if (e.target.classList.contains('popup-overlay') || e.target.classList.contains('close-popup')) {
+      if (e.target.classList.contains('popup-overlay') || 
+          e.target.classList.contains('close-popup')) {
         this.remove();
       }
     });
   });
 });
-
-// End of file - keep this comment
