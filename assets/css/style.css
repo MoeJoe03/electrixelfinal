@@ -553,38 +553,6 @@ body {
 
 
 
-
-/*-----------------------------------*\
-  #BLOG
-\*-----------------------------------*/
-
-.blog .section-text { margin-block: 5px 35px; }
-
-.blog-card { background-color: var(--white-2); }
-
-.blog-card .card-banner { overflow: hidden; }
-
-.blog-card .card-banner img { transition: var(--transition-2); }
-
-.blog-card:is(:hover, :focus-within) .card-banner img { transform: scale(1.05); }
-
-.blog-card .card-content { padding: 15px; }
-
-.blog-card .time {
-  color: var(--red-crayola);
-  font-size: var(--fs-6);
-  line-height: 1;
-  margin-block-end: 10px;
-}
-
-.blog-card .card-title { transition: var(--transition-1); }
-
-.blog-card .card-title:is(:hover, :focus) { color: var(--red-crayola); }
-
-
-
-
-
 /*-----------------------------------*\
   #CONTACT
 \*-----------------------------------*/
