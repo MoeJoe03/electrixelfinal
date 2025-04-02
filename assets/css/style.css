@@ -20,10 +20,10 @@
    * colors
    */
 
-  --safety-orange: hsl(25, 100%, 50%);
+  --safety-orange: hsl(219, 87%, 37%);
   --lavender-gray: hsl(230, 19%, 81%);
-  --persian-rose: hsl(328, 100%, 59%);
-  --red-crayola: hsl(341, 100%, 49%);
+  --persian-rose: hsl(224, 98%, 22%);
+  --red-crayola: hsl(236, 84%, 12%);
   --eerie-black: hsl(240, 6%, 10%);
   --light-gray: hsl(0, 0%, 80%);
   --cultured-2: hsl(210, 60%, 98%);
@@ -32,8 +32,8 @@
   --cultured: hsl(0, 0%, 93%);
   --black_10: hsla(0, 0%, 0%, 0.1);
   --black_5: hsla(0, 0%, 0%, 0.05);
-  --white-1: hsl(0, 0%, 100%);
-  --white-2: hsl(0, 14%, 98%);
+  --white-1: hsl(0, 0%, 0%);
+  --white-2: hsl(0, 0%, 0%);
   --black: hsl(0, 0%, 0%);
 
   /**
