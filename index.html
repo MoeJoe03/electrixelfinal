@@ -1,126 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, viewport-fit=cover">
   <title>Electrixel - Transforming brands</title>
 
-  <!-- 
-    - favicon
-  -->
+  <!-- Preload critical resources -->
+  <link rel="preload" href="./assets/css/style.css" as="style">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Roboto:wght@400;500;700&display=swap" as="style">
+  
+  <!-- Favicon -->
   <link rel="shortcut icon" href="./favicon.ico" type="image/svg+xml">
 
-  <!-- 
-    - custom css link
-  -->
+  <!-- CSS -->
   <link rel="stylesheet" href="./assets/css/style.css">
 
-  <!-- 
-    - google font link
-  -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Roboto:wght@400;500;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Preload hero video -->
+  <link rel="preload" href="./assets/videos/hero-video.mp4" as="video" type="video/mp4">
 </head>
 
 <body id="top">
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" data-overlay></div>
 
-  <!-- 
-    - #HEADER
-  -->
-
+  <!-- Header -->
   <header class="header" data-header>
     <div class="container">
-
-      <a href="#" class="logo">InnoHub</a>
-
-      <nav class="navbar container" data-navbar>
+      <a href="#" class="logo">Electrixel</a>
+  
+      <nav class="navbar" data-navbar>
         <ul class="navbar-list">
-
-          <li>
-            <a href="#home" class="navbar-link" data-nav-link>Home</a>
+          <li><a href="#home" class="navbar-link" data-nav-link>Home</a></li>
+          <li><a href="#service" class="navbar-link" data-nav-link>Services</a></li>
+          <li><a href="#project" class="navbar-link" data-nav-link>Projects</a></li>
+          <li><a href="#about" class="navbar-link" data-nav-link>About</a></li>
+          <li><a href="#contact" class="navbar-link" data-nav-link>Contact</a></li>
+          <li class="mobile-socials">
+            <div class="social-links">
+              <a href="#" aria-label="Instagram"><ion-icon name="logo-instagram"></ion-icon></a>
+              <a href="#" aria-label="Facebook"><ion-icon name="logo-facebook"></ion-icon></a>
+              <a href="#" aria-label="LinkedIn"><ion-icon name="logo-linkedin"></ion-icon></a>
+            </div>
           </li>
-
-          <li>
-            <a href="#service" class="navbar-link" data-nav-link>Services</a>
-          </li>
-
-          <li>
-            <a href="#project" class="navbar-link" data-nav-link>Project</a>
-          </li>
-
-          <li>
-            <a href="#about" class="navbar-link" data-nav-link>About Us</a>
-          </li>
-
-          <li>
-            <a href="#contact" class="navbar-link" data-nav-link>Contact Us</a>
-          </li>
-
-          <li>
-            <a href="#" class="btn btn-primary">Get Started</a>
-          </li>
-
         </ul>
       </nav>
-
+  
       <button class="nav-toggle-btn" aria-label="Toggle menu" data-nav-toggler>
         <ion-icon name="menu-outline" class="open"></ion-icon>
         <ion-icon name="close-outline" class="close"></ion-icon>
       </button>
-
     </div>
   </header>
 
+  <main>
 
+<body id="top">
 
-
+  <!-- Header with improved mobile menu -->
+  <header class="header" data-header>
+    <div class="container">
+      <a href="#" class="logo">InnoHub</a>
+  
+      <nav class="navbar container" data-navbar>
+        <ul class="navbar-list">
+          <li>
+            <a href="#home" class="navbar-link" data-nav-link>Home</a>
+          </li>
+          <li>
+            <a href="#service" class="navbar-link" data-nav-link>Services</a>
+          </li>
+          <li>
+            <a href="#project" class="navbar-link" data-nav-link>Project</a>
+          </li>
+          <li>
+            <a href="#about" class="navbar-link" data-nav-link>About Us</a>
+          </li>
+          <li>
+            <a href="#contact" class="navbar-link" data-nav-link>Contact Us</a>
+          </li>
+          <li>
+            <a href="quote.html" class="navbar-link">Get a Quote</a>
+          </li>
+          <li class="navbar-socials">
+            <div class="social-links">
+              <a href="https://instagram.com/yourprofile" target="_blank" rel="noopener" aria-label="Instagram">
+                <ion-icon name="logo-instagram"></ion-icon>
+              </a>
+              <a href="https://facebook.com/yourpage" target="_blank" rel="noopener" aria-label="Facebook">
+                <ion-icon name="logo-facebook"></ion-icon>
+              </a>
+              <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener" aria-label="LinkedIn">
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+            </div>
+          </li>
+          <li>
+            <a href="#" class="btn btn-primary">Get Started</a>
+          </li>
+        </ul>
+      </nav>
+  
+      <button class="nav-toggle-btn" aria-label="Toggle menu" data-nav-toggler aria-expanded="false">
+        <ion-icon name="menu-outline" class="open"></ion-icon>
+        <ion-icon name="close-outline" class="close"></ion-icon>
+      </button>
+    </div>
+  </header>
 
   <main>
     <article>
-
-      <!-- 
-        - #HERO
-      -->
-
+      <!-- Hero Section with video optimization -->
       <section class="section hero" id="home" aria-label="hero">
         <div class="container">
-
           <div class="hero-content">
-
             <p class="hero-subtitle">Electrixel</p>
-
-            <h1 class="h1 hero-title">Lets transform your brand</h1>
-
+            <h1 class="h1 hero-title">Let's transform your brand</h1>
             <p class="hero-text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporthem incididunt ut labore et
-              dolore magna
-              aliqua.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit...
             </p>
-
             <a href="#" class="btn btn-primary">Get Started</a>
-
           </div>
 
-          <figure class="hero-banner">
-            <img src="./assets/images/hero-banner.png" width="720" height="673" alt="hero banner" class="w-100">
-          </figure>
-
+          <div class="hero-media-container">
+            <video autoplay muted loop playsinline class="hero-video" aria-hidden="true" disablepictureinpicture>
+              <source src="./assets/videos/hero-video.mp4" type="video/mp4">
+              <!-- Fallback image -->
+              <img src="./assets/images/hero-banner.png" alt="Hero banner fallback" class="img-cover" loading="lazy">
+            </video>
+            <div class="video-overlay"></div>
+          </div>
         </div>
       </section>
 
-
-
-
-
-      <!-- 
-        - #SERVICE
-      -->
-
+      <!-- Services Section with improved touch targets -->
       <section class="section service" id="service" aria-label="service">
         <div class="container">
 
@@ -134,10 +152,10 @@
           <ul class="grid-list">
 
             <li>
-              <div class="service-card">
+              <div class="service-card" tabindex="0"> <!-- Added tabindex for better focus -->
 
                 <div class="card-icon" style="background-color: #13c4a1">
-                  <ion-icon name="chatbox"></ion-icon>
+                  <ion-icon name="chatbox" aria-hidden="true"></ion-icon>
                 </div>
 
                 <h3 class="h3">
@@ -154,10 +172,10 @@
             </li>
 
             <li>
-              <div class="service-card">
+              <div class="service-card" tabindex="0">
 
                 <div class="card-icon" style="background-color: #6610f2">
-                  <ion-icon name="desktop"></ion-icon>
+                  <ion-icon name="desktop" aria-hidden="true"></ion-icon>
                 </div>
 
                 <h3 class="h3">
@@ -174,10 +192,10 @@
             </li>
 
             <li>
-              <div class="service-card">
+              <div class="service-card" tabindex="0">
 
                 <div class="card-icon" style="background-color: #ffb700">
-                  <ion-icon name="bulb"></ion-icon>
+                  <ion-icon name="bulb" aria-hidden="true"></ion-icon>
                 </div>
 
                 <h3 class="h3">
@@ -194,10 +212,10 @@
             </li>
 
             <li>
-              <div class="service-card">
+              <div class="service-card" tabindex="0">
 
                 <div class="card-icon" style="background-color: #fc3549">
-                  <ion-icon name="phone-portrait"></ion-icon>
+                  <ion-icon name="phone-portrait" aria-hidden="true"></ion-icon>
                 </div>
 
                 <h3 class="h3">
@@ -214,10 +232,10 @@
             </li>
 
             <li>
-              <div class="service-card">
+              <div class="service-card" tabindex="0">
 
                 <div class="card-icon" style="background-color: #00d280">
-                  <ion-icon name="archive"></ion-icon>
+                  <ion-icon name="archive" aria-hidden="true"></ion-icon>
                 </div>
 
                 <h3 class="h3">
@@ -234,10 +252,10 @@
             </li>
 
             <li>
-              <div class="service-card">
+              <div class="service-card" tabindex="0">
 
                 <div class="card-icon" style="background-color: #ff612f">
-                  <ion-icon name="build"></ion-icon>
+                  <ion-icon name="build" aria-hidden="true"></ion-icon>
                 </div>
 
                 <h3 class="h3">
@@ -258,14 +276,7 @@
         </div>
       </section>
 
-
-
-
-
-      <!-- 
-        - #PROJECT
-      -->
-
+      <!-- Projects Section with lazy loading -->
       <section class="section project" id="project" aria-label="project">
         <div class="container">
 
@@ -307,7 +318,7 @@
 
                 <figure class="card-banner img-holder" style="--width: 510; --height: 700;">
                   <img src="./assets/images/project-2.jpg" width="510" height="700" loading="lazy"
-                    alt="Building design process within teams" class="img-cover">
+                    alt="building-design-process" class="img-cover">
                 </figure>
 
                 <div class="card-content">
@@ -330,7 +341,7 @@
 
                 <figure class="card-banner img-holder" style="--width: 510; --height: 700;">
                   <img src="./assets/images/project-3.jpg" width="510" height="700" loading="lazy"
-                    alt="How intercom brings play into their design process" class="img-cover">
+                    alt="e-commerce-redesign" class="img-cover">
                 </figure>
 
                 <div class="card-content">
@@ -353,7 +364,7 @@
 
                 <figure class="card-banner img-holder" style="--width: 510; --height: 700;">
                   <img src="./assets/images/project-4.jpg" width="510" height="700" loading="lazy"
-                    alt="Stuck with to-do list, I created a new app for" class="img-cover">
+                    alt="mobile-app-development" class="img-cover">
                 </figure>
 
                 <div class="card-content">
@@ -422,22 +433,107 @@
         </div>
       </section>
 
+      <!-- How We Work Section with mobile improvements -->
+      <section class="section process" id="process" aria-label="process">
+        <div class="container">
+          <h2 class="h2 section-title">How We Work</h2>
+          <p class="section-text">
+            Our proven 5-step process delivers exceptional results through collaboration and innovation. Scroll to explore each phase of our workflow.
+          </p>
 
+          <div class="process-steps">
 
+            <!-- Step 1 -->
+            <div class="process-step">
+              <div class="step-number">01</div>
+              <div class="step-content">
+                <h3 class="h3">Discovery</h3>
+                <p>
+                  We dive deep to understand your business goals, target audience, and project requirements through collaborative workshops and research sessions.
+                </p>
+              </div>
+              <div class="step-image">
+                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Discovery phase" loading="lazy">
+              </div>
+            </div>
 
+            <!-- Step 2 -->
+            <div class="process-step">
+              <div class="step-number">02</div>
+              <div class="step-content">
+                <h3 class="h3">Strategy</h3>
+                <p>
+                  Our team crafts a customized roadmap with clear milestones, KPIs, and solutions tailored to your specific objectives and market position.
+                </p>
+              </div>
+              <div class="step-image">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Strategy phase" loading="lazy">
+              </div>
+            </div>
 
-      <!-- 
-        - #ABOUT
-      -->
+            <!-- Step 3 -->
+            <div class="process-step">
+              <div class="step-number">03</div>
+              <div class="step-content">
+                <h3 class="h3">Design</h3>
+                <p>
+                  We create stunning, user-centric designs through iterative prototyping and usability testing to ensure optimal experience and brand alignment.
+                </p>
+              </div>
+              <div class="step-image">
+                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Design phase" loading="lazy">
+              </div>
+            </div>
 
+            <!-- Step 4 -->
+            <div class="process-step">
+              <div class="step-number">04</div>
+              <div class="step-content">
+                <h3 class="h3">Development</h3>
+                <p>
+                  Our developers implement robust solutions using modern technologies and frameworks, following agile methodologies for quality results.
+                </p>
+              </div>
+              <div class="step-image">
+                <img src="https://images.unsplash.com/photo-1581094794329-c8111c78a1e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Development phase" loading="lazy">
+              </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="process-step">
+              <div class="step-number">05</div>
+              <div class="step-content">
+                <h3 class="h3">Launch & Growth</h3>
+                <p>
+                  We ensure smooth deployment and provide ongoing optimization, analytics, and support to help your solution evolve with your business needs.
+                </p>
+              </div>
+              <div class="step-image">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Launch phase" loading="lazy">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section with video improvements -->
       <section class="section about" id="about" aria-label="about">
         <div class="container">
 
-          <div class="about-banner img-holder" style="--width: 720; --height: 960;">
-            <img src="./assets/images/about-banner.jpg" width="720" height="960" loading="lazy" alt="about banner"
-              class="img-cover">
+          <div class="about-banner video-container" style="--width: 720; --height: 960;">
+            <video autoplay muted loop playsinline class="img-cover" width="720" height="960" loading="lazy" aria-hidden="true">
+              <source src="./assets/videos/about-video.mp4" type="video/mp4">
+              <!-- Fallback image -->
+              <img src="./assets/images/about-banner.jpg" alt="About our company">
+            </video>
 
-            <button class="play-btn" aria-label="Play video">
+            <button class="play-btn" aria-label="Play/pause video">
               <ion-icon name="play" aria-hidden="true"></ion-icon>
             </button>
           </div>
@@ -507,14 +603,7 @@
         </div>
       </section>
 
-
-
-
-
-      <!-- 
-        - #CTA
-      -->
-
+      <!-- CTA Section -->
       <section class="section cta" aria-label="cta" style="background-image: url('./assets/images/cta-bg.jpg')">
         <div class="container">
 
@@ -527,12 +616,7 @@
         </div>
       </section>
 
-    
-
-      <!-- 
-        - #CONTACT
-      -->
-
+      <!-- Contact Section with improved form -->
       <section class="section contact" id="contact" aria-label="contact">
         <div class="container">
 
@@ -544,7 +628,7 @@
             aliqua.
           </p>
 
-          <form action="https://formspree.io/f/xanepnyz" method="POST">
+          <form action="https://formspree.io/f/xanepnyz" method="POST" class="contact-form">
 
             <div class="input-wrapper">
               <input type="text" name="name" aria-label="name" placeholder="Your name*" required class="input-field">
@@ -556,7 +640,7 @@
             <div class="input-wrapper">
               <input type="text" name="subject" aria-label="subject" placeholder="Subject" class="input-field">
 
-              <input type="number" name="phone" aria-label="phone" placeholder="Phone number" class="input-field">
+              <input type="tel" name="phone" aria-label="phone" placeholder="Phone number" class="input-field" pattern="[0-9]{10}">
             </div>
 
             <textarea name="message" aria-label="message" placeholder="Your message...*" required
@@ -644,51 +728,26 @@
     </article>
   </main>
 
+<!-- 
+  - #FOOTER
+-->
+ <!-- Footer -->
+ <footer class="footer">
+  <div class="container">
+    <p class="copyright">
+      &copy; <span id="current-year">2025</span> All Rights Reserved by <a href="#" class="copyright-link">Electrixel</a>
+    </p>
+  </div>
+</footer>
 
+<!-- Back to top -->
+<a href="#top" aria-label="back to top" data-back-top-btn class="back-top-btn">
+  <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+</a>
 
-
-
-  <!-- 
-    - #FOOTER
-  -->
-
-  <footer class="footer">
-    <div class="container">
-
-      <p class="copyright">
-        &copy; 2025 All Rights Reserved by <a href="#" class="copyright-link">Electrixel</a>
-      </p>
-
-    </div>
-  </footer>
-
-
-
-
-
-  <!-- 
-    - #BACK TO TOP
-  -->
-
-  <a href="#top" aria-label="back to top" data-back-top-btn class="back-top-btn">
-    <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
-  </a>
-
-
-
-
-
-  <!-- 
-    - custom js link
-  -->
-  <script src="./assets/js/script.js" defer></script>
-
-  <!-- 
-    - ionicon link
-  -->
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
+<!-- Scripts -->
+<script src="./assets/js/script.js" defer></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
-
 </html>

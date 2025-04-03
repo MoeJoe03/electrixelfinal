@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electrixel - Get a Quote</title>
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./favicon.ico" type="image/svg+xml">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body id="top">
+  <!-- Header -->
+  <header class="header" data-header>
+    <div class="container">
+      <a href="index.html" class="logo">Electrixel</a>
+  
+      <nav class="navbar container" data-navbar>
+        <ul class="navbar-list">
+          <li><a href="index.html#home" class="navbar-link" data-nav-link>Home</a></li>
+          <li><a href="index.html#service" class="navbar-link" data-nav-link>Services</a></li>
+          <li><a href="index.html#project" class="navbar-link" data-nav-link>Projects</a></li>
+          <li><a href="index.html#about" class="navbar-link" data-nav-link>About</a></li>
+          <li><a href="index.html#contact" class="navbar-link" data-nav-link>Contact</a></li>
+          <li><a href="quote.html" class="btn btn-primary">Get Quote</a></li>
+        </ul>
+      </nav>
+  
+      <button class="nav-toggle-btn" aria-label="Toggle menu" data-nav-toggler>
+        <ion-icon name="menu-outline" class="open"></ion-icon>
+        <ion-icon name="close-outline" class="close"></ion-icon>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section quote" aria-label="quote request">
+      <div class="container">
+        <h2 class="h2 section-title">Get a Custom Quote</h2>
+        
+        <div class="quote-form">
+          <form action="https://formspree.io/f/xanepnyz" method="POST">
+            <div class="form-group">
+              <label for="name">Full Name <span class="required">*</span></label>
+              <input type="text" id="name" name="name" required class="input-field">
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email <span class="required">*</span></label>
+              <input type="email" id="email" name="email" required class="input-field">
+            </div>
+            
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" class="input-field">
+            </div>
+            
+            <div class="form-group">
+              <label for="service">Service Needed <span class="required">*</span></label>
+              <select id="service" name="service" required class="input-field">
+                <option value="">Select a service...</option>
+                <option value="web-design">Web Design</option>
+                <option value="development">Web Development</option>
+                <option value="seo">SEO Services</option>
+                <option value="branding">Branding</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Project Details <span class="required">*</span></label>
+              <textarea id="message" name="message" required class="input-field"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary submit-btn">Request Free Quote</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p class="copyright">
+        &copy; 2025 All Rights Reserved by <a href="#" class="copyright-link">Electrixel</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <a href="#top" aria-label="back to top" data-back-top-btn class="back-top-btn">
+    <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+  </a>
+
+  <!-- Scripts -->
+  <script src="./assets/js/script.js" defer></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
