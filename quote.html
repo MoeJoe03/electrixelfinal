@@ -3,108 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Electrixel - Get a Quote</title>
-  
-  <!-- Favicon -->
-  <link rel="shortcut icon" href="./favicon.ico" type="image/svg+xml">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="./assets/css/style.css">
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Request a Quote - Electrixel</title> <meta name="description" content="Get a personalized quote for your digital marketing, SEO, design, or development project from Electrixel. Tell us about your needs."> <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="./assets/css/style.css" as="style">
+  <link rel="preload" href="./assets/js/script.js" as="script">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Roboto:wght@400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  </noscript>
 </head>
 
 <body id="top">
-  <!-- Header -->
+  <div class="mobile-menu-overlay" data-overlay></div>
+
   <header class="header" data-header>
-    <div class="container">
-      <a href="index.html" class="logo">Electrixel</a>
-  
-      <nav class="navbar container" data-navbar>
-        <ul class="navbar-list">
-          <li><a href="index.html#home" class="navbar-link" data-nav-link>Home</a></li>
-          <li><a href="index.html#service" class="navbar-link" data-nav-link>Services</a></li>
-          <li><a href="index.html#project" class="navbar-link" data-nav-link>Projects</a></li>
-          <li><a href="index.html#about" class="navbar-link" data-nav-link>About</a></li>
-          <li><a href="index.html#contact" class="navbar-link" data-nav-link>Contact</a></li>
-          <li><a href="quote.html" class="btn btn-primary">Get Quote</a></li>
-        </ul>
-      </nav>
-  
-      <button class="nav-toggle-btn" aria-label="Toggle menu" data-nav-toggler>
-        <ion-icon name="menu-outline" class="open"></ion-icon>
-        <ion-icon name="close-outline" class="close"></ion-icon>
-      </button>
-    </div>
-  </header>
+     <div class="container">
+       <a href="index.html" class="logo">Electrixel</a> <nav class="navbar" data-navbar aria-label="Main Navigation">
+         <ul class="navbar-list">
+           <li><a href="index.html#home" class="navbar-link" data-nav-link>Home</a></li> <li><a href="index.html#service" class="navbar-link" data-nav-link>Services</a></li>
+           <li><a href="index.html#project" class="navbar-link" data-nav-link>Projects</a></li>
+           <li><a href="index.html#process" class="navbar-link" data-nav-link>Process</a></li>
+           <li><a href="index.html#about" class="navbar-link" data-nav-link>About</a></li>
+           <li><a href="index.html#contact" class="navbar-link" data-nav-link>Contact</a></li>
+           <li class="mobile-socials">
+             <div class="social-links">
+               <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><ion-icon name="logo-instagram"></ion-icon></a>
+               <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><ion-icon name="logo-facebook"></ion-icon></a>
+               <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><ion-icon name="logo-linkedin"></ion-icon></a>
+             </div>
+           </li>
+         </ul>
+       </nav>
+       <button class="nav-toggle-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar" data-nav-toggler>
+         <ion-icon name="menu-outline" class="open" aria-hidden="true"></ion-icon>
+         <ion-icon name="close-outline" class="close" aria-hidden="true"></ion-icon>
+       </button>
+     </div>
+   </header>
 
   <main>
-    <section class="section quote" aria-label="quote request">
-      <div class="container">
-        <h2 class="h2 section-title">Get a Custom Quote</h2>
-        
-        <div class="quote-form">
-          <form action="https://formspree.io/f/xanepnyz" method="POST">
-            <div class="form-group">
-              <label for="name">Full Name <span class="required">*</span></label>
-              <input type="text" id="name" name="name" required class="input-field">
+    <article>
+      <section class="section quote-request" id="quote" aria-labelledby="quote-title" style="padding-top: calc(var(--header-height) + 40px);"> <div class="container">
+          <h1 class="h1 section-title" id="quote-title">Request Your Project Quote</h1>
+          <p class="section-text">
+            Please provide us with details about your project requirements, and we'll get back to you with a personalized quote as soon as possible.
+          </p>
+
+          <form action="https://formspree.io/f/YOUR_QUOTE_ENDPOINT" method="POST" class="contact-form quote-form"> <h2 class="h3 form-subtitle">Contact Information</h2>
+            <div class="input-wrapper">
+              <label for="name" class="sr-only">Your Name</label>
+              <input type="text" name="name" id="name" placeholder="Your Name*" required class="input-field">
+
+              <label for="email" class="sr-only">Email Address</label>
+              <input type="email" name="email" id="email" placeholder="Work Email Address*" required class="input-field">
             </div>
-            
-            <div class="form-group">
-              <label for="email">Email <span class="required">*</span></label>
-              <input type="email" id="email" name="email" required class="input-field">
+             <div class="input-wrapper">
+                <label for="company" class="sr-only">Company Name</label>
+                <input type="text" name="company" id="company" placeholder="Company Name (Optional)" class="input-field">
+
+                <label for="phone" class="sr-only">Phone Number</label>
+                <input type="tel" name="phone" id="phone" placeholder="Phone Number (Optional)" class="input-field" pattern="[0-9\s\-()+]*">
             </div>
-            
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" class="input-field">
+
+            <h2 class="h3 form-subtitle">Project Details</h2>
+             <div class="input-wrapper">
+                 <label for="services" class="form-label">Services Interested In*:</label> <div class="checkbox-group">
+                    <div class="checkbox-item"><input type="checkbox" id="service-seo" name="service_needed[]" value="SEO"><label for="service-seo">SEO Optimization</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="service-marketing" name="service_needed[]" value="Digital Marketing"><label for="service-marketing">Digital Marketing</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="service-design" name="service_needed[]" value="Web Design"><label for="service-design">Web Design/Development</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="service-research" name="service_needed[]" value="Market Research"><label for="service-research">Market Research</label></div>
+                    <div class="checkbox-item"><input type="checkbox" id="service-other" name="service_needed[]" value="Other"><label for="service-other">Other (Please specify below)</label></div>
+                 </div>
+             </div>
+
+            <div class="input-wrapper">
+                 <label for="budget" class="form-label">Estimated Budget (Optional):</label>
+                 <select name="budget" id="budget" class="input-field">
+                     <option value="" disabled selected>Select Budget Range</option>
+                     <option value="<5000">&lt; R 5,000</option>
+                     <option value="5000-15000">R 5,000 - R 15,000</option>
+                     <option value="15000-30000">R 15,000 - R 30,000</option>
+                     <option value="30000-50000">R 30,000 - R 50,000</option>
+                     <option value="50000+">R 50,000+</option>
+                     <option value="Unsure">Unsure</option>
+                 </select>
             </div>
-            
-            <div class="form-group">
-              <label for="service">Service Needed <span class="required">*</span></label>
-              <select id="service" name="service" required class="input-field">
-                <option value="">Select a service...</option>
-                <option value="web-design">Web Design</option>
-                <option value="development">Web Development</option>
-                <option value="seo">SEO Services</option>
-                <option value="branding">Branding</option>
-                <option value="other">Other</option>
-              </select>
+
+            <label for="project-description" class="sr-only">Project Description</label>
+            <textarea name="project_description" id="project-description" placeholder="Briefly describe your project, goals, and timeline...*" required class="input-field" rows="6"></textarea>
+
+            <div class="checkbox-wrapper">
+              <input type="checkbox" name="terms_and_policy" id="terms" required class="checkbox">
+              <label for="terms" class="label">
+                I accept the <a href="/privacy-policy.html" class="label-link" target="_blank">Privacy Policy</a> and <a href="/terms-of-service.html" class="label-link" target="_blank">Terms of Service</a>*
+              </label>
             </div>
-            
-            <div class="form-group">
-              <label for="message">Project Details <span class="required">*</span></label>
-              <textarea id="message" name="message" required class="input-field"></textarea>
-            </div>
-            
-            <button type="submit" class="btn btn-primary submit-btn">Request Free Quote</button>
+
+            <button type="submit" class="btn btn-primary">Submit Quote Request</button>
           </form>
+
         </div>
-      </div>
-    </section>
+      </section>
+    </article>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <p class="copyright">
-        &copy; 2025 All Rights Reserved by <a href="#" class="copyright-link">Electrixel</a>
+        &copy; <span id="current-year">2025</span> All Rights Reserved by <a href="index.html" class="copyright-link">Electrixel</a>.
       </p>
     </div>
   </footer>
 
-  <!-- Back to top -->
-  <a href="#top" aria-label="back to top" data-back-top-btn class="back-top-btn">
-    <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+  <a href="#top" aria-label="Back to top" data-back-top-btn class="back-top-btn">
+    <ion-icon name="chevron-up-outline" aria-hidden="true"></ion-icon>
   </a>
 
-  <!-- Scripts -->
-  <script src="./assets/js/script.js" defer></script>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script src="./assets/js/script.js" defer></script> <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
 </body>
 </html>
