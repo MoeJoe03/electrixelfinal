@@ -60,7 +60,7 @@
   --cubic-out: cubic-bezier(0.33, 0.85, 0.4, 0.96);
 
   /* Form Elements */
-  --focus-ring: 0 0 0 3px hsla(var(--red-crayola), 0.3); /* Use HSL for transparency */
+  --focus-ring: 0 0 0 3px hsla(236, 84%, 12%, 0.3); /* Use HSL for transparency with --red-crayola */
   --spinner-color: var(--red-crayola);
 
   /* Mobile Specific (Can be overridden in media queries if needed) */
@@ -113,6 +113,11 @@ body.nav-active {
   overflow: hidden; /* Prevent scrolling when mobile menu is open */
 }
 
+/* Hide scrollbars while preloader is active */
+body.preloader-active {
+  overflow: hidden;
+}
+
 li { list-style: none; }
 
 a {
@@ -120,11 +125,11 @@ a {
   color: inherit;
 }
 
-a, img, span, time, label, input, button, textarea, ion-icon {
+a, img, span, time, label, input, button, textarea, ion-icon, svg { /* Added svg */
   display: block; /* Make elements block-level by default */
 }
 
-img {
+img, svg { /* Added svg */
   height: auto; /* Maintain aspect ratio */
   max-width: 100%; /* Prevent images from overflowing */
 }
@@ -166,11 +171,105 @@ h3 { font-size: var(--fs-3); }
   box-shadow: var(--focus-ring); /* Optional: add focus ring */
 }
 
+/* Screen Reader Only Class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background-color: var(--white-2); }
 ::-webkit-scrollbar-thumb { background-color: var(--light-gray); border-radius: 5px;}
 ::-webkit-scrollbar-thumb:hover { background-color: var(--gray-web); }
+
+
+/* ================= PRELOADER STYLES START ================= */
+/*-----------------------------------*\
+  #PRELOADER STYLES
+\*-----------------------------------*/
+
+.preloader {
+  position: fixed;
+  inset: 0; /* Equivalent to top: 0; right: 0; bottom: 0; left: 0; */
+  background-color: #1360b8; /* Dark background like Bloomr */
+  z-index: 10000; /* Ensure it's above everything else */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto; /* Allow interaction if needed, though usually not */
+
+  /* Exit Transition (when .loaded is added) */
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), /* Fade out overlay */
+              visibility 0s linear 0.8s; /* Hide after fade */
+}
+
+.preloader-container {
+  /* Animation for the content */
+  opacity: 0;
+  transform: scale(0.8);
+  animation: preloaderContentEnter 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards; /* duration, timing, delay, fill-mode */
+}
+
+/* Entrance Animation for the content */
+@keyframes preloaderContentEnter {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Option 1: Styling for the simple CSS graphic */
+.preloader-graphic {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #ffffff; /* White circle */
+  /* Add subtle pulse or spin if desired */
+  /* animation: preloaderPulse 1.5s ease-in-out infinite alternate; */
+}
+
+/* Option 2/3: Styling for the Logo (if using img or svg) */
+.preloader-logo {
+  display: block;
+  width: 300px; /* Adjust size as needed */
+  height: auto; /* Maintain aspect ratio */
+  max-width: 100%;
+  fill: #ffffff; /* Set SVG fill color if applicable */
+  /* Add specific logo animations if needed */
+}
+
+/* @keyframes preloaderPulse {
+  from { transform: scale(0.95); opacity: 0.9; }
+  to { transform: scale(1.05); opacity: 1; }
+} */
+
+
+/* Styles when loading is finished (triggered by JS adding 'loaded' class) */
+.preloader.loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none; /* Disable interaction when hidden */
+}
+
+/* Optional: Fade out the content slightly before the overlay */
+.preloader.loaded .preloader-container {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.4s ease, transform 0.4s ease; /* Exit animation */
+}
+/* ================= PRELOADER STYLES END =================== */
+
 
 /*-----------------------------------*\
   #REUSED STYLES
@@ -218,6 +317,7 @@ h3 { font-size: var(--fs-3); }
   justify-content: center;
   gap: 5px; /* Space for potential icons */
   min-height: var(--mobile-tap-target); /* Ensure minimum touch size */
+  border: 1px solid transparent; /* Base border for consistency */
 }
 
 .btn-primary {
@@ -229,6 +329,7 @@ h3 { font-size: var(--fs-3); }
 .btn-primary:is(:hover, :focus-visible) {
   background-position: right center; /* Smooth background transition */
   color: var(--white-1); /* Ensure text color remains */
+  border-color: transparent;
 }
 
 .btn-secondary {
@@ -240,6 +341,7 @@ h3 { font-size: var(--fs-3); }
 .btn-secondary:is(:hover, :focus-visible) {
   background-color: var(--eerie-black);
   color: var(--white-1);
+  border-color: var(--eerie-black);
 }
 
 .grid-list {
@@ -306,6 +408,8 @@ h3 { font-size: var(--fs-3); }
   color: var(--eerie-black);
   width: var(--mobile-tap-target); /* Ensure touch target size */
   height: var(--mobile-tap-target);
+  background: none; /* Ensure no background */
+  border: none; /* Ensure no border */
 }
 
 .nav-toggle-btn .open,
@@ -531,13 +635,30 @@ h3 { font-size: var(--fs-3); }
   font-size: var(--fs-4); /* Slightly larger title */
 }
 
-.service-card .card-title a {
-    transition: color var(--transition-1);
+/* Ensure title link covers the title area better */
+.service-card .card-title a.card-title-link {
+    color: inherit; /* Inherit color from h3 */
+    text-decoration: none;
 }
 
-.service-card .card-title a:is(:hover, :focus-visible) {
-    color: var(--red-crayola);
+.service-card .card-title a.card-title-link::after {
+    content: "";
+    position: absolute;
+    inset: 0; /* Cover the parent card for clickability */
+    /* Optional: for debugging click area */
+    /* background: rgba(255,0,0,0.1); */
 }
+
+.service-card .card-title a.card-title-link:is(:hover, :focus-visible) {
+    color: var(--red-crayola);
+    outline: none; /* Rely on card focus */
+}
+/* Focus state on the card itself */
+.service-card:focus-within {
+    outline: 2px solid var(--red-crayola);
+    outline-offset: 2px;
+}
+
 
 .service-card .card-text {
     font-size: var(--fs-6);
@@ -610,8 +731,9 @@ h3 { font-size: var(--fs-3); }
   margin-block-end: 15px;
 }
 
-.project-card .card-title a {
+.project-card .card-title a.card-title-link {
   transition: color var(--transition-1);
+  color: var(--white-1);
 }
 /* No hover effect needed as text is white */
 
@@ -712,6 +834,8 @@ h3 { font-size: var(--fs-3); }
 .step-image img {
     display: block;
     width: 100%;
+    height: 100%; /* Ensure image fills container */
+    object-fit: cover;
 }
 
 /* Image Border Colors */
@@ -739,6 +863,7 @@ h3 { font-size: var(--fs-3); }
   overflow: hidden;
   aspect-ratio: 3 / 4; /* Maintain aspect ratio */
   margin-bottom: 30px; /* Space below banner on mobile */
+  background-color: var(--light-gray); /* Background for video loading */
 }
 
 .about-banner .img-cover { /* Applies to video too */
@@ -759,6 +884,7 @@ h3 { font-size: var(--fs-3); }
   z-index: 1;
   transition: transform var(--transition-1), background-color var(--transition-1);
   animation: pulse 2s ease-out infinite;
+  border: none; /* Ensure button has no border */
 }
 
 .play-btn:is(:hover, :focus-visible) {
@@ -934,24 +1060,81 @@ textarea.input-field {
   margin-bottom: 20px; /* Space below textarea */
 }
 
-.checkbox-wrapper {
+select.input-field { /* Add styling for select dropdowns */
+    appearance: none; /* Remove default arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23888' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px 16px;
+    padding-right: 40px; /* Make space for custom arrow */
+}
+/* Style for disabled selected option */
+select.input-field:required:invalid {
+    color: var(--gray-web);
+}
+select.input-field option[value=""][disabled] {
+    display: none; /* Hide placeholder option after selection */
+}
+select.input-field option {
+    color: var(--eerie-black); /* Color for options */
+    background-color: var(--white-1);
+}
+
+
+.checkbox-wrapper, .checkbox-group-wrapper { /* Style wrapper for quote form too */
   display: flex;
   align-items: flex-start;
   gap: 10px;
   margin-block: 15px 25px; /* Adjusted spacing */
 }
+/* Specific styling for checkbox groups in quote form */
+.checkbox-group-wrapper {
+    flex-direction: column; /* Stack label and group */
+    align-items: flex-start;
+    gap: 10px;
+}
+.form-label { /* Label for checkbox group / select */
+    font-size: var(--fs-5);
+    font-weight: var(--fw-500);
+    color: var(--eerie-black);
+    margin-bottom: 5px;
+}
+.checkbox-group {
+    display: grid;
+    gap: 10px; /* Space between checkboxes */
+}
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.checkbox-item label {
+    font-size: var(--fs-6);
+    cursor: pointer;
+}
+.checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--red-crayola);
+    cursor: pointer;
+    margin: 0; /* Reset margin */
+    flex-shrink: 0;
+}
 
-.checkbox {
+
+.checkbox { /* General checkbox styling */
   width: 18px; /* Checkbox size */
   height: 18px;
   margin-top: 3px; /* Align with text */
   accent-color: var(--red-crayola); /* Color the checkmark */
   flex-shrink: 0; /* Prevent shrinking */
+  cursor: pointer;
 }
 
-.checkbox-wrapper .label {
+.checkbox-wrapper .label { /* Label next to single checkbox */
   font-size: var(--fs-6);
   line-height: 1.5; /* Adjust line height */
+  cursor: pointer;
 }
 
 .label-link {
@@ -971,6 +1154,22 @@ textarea.input-field {
     margin-inline: auto; /* Center */
 }
 
+/* Spinner for button */
+.spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Form submission message styles */
 .success-message, .error-message {
     padding: 20px;
@@ -981,7 +1180,7 @@ textarea.input-field {
 .success-message { background-color: hsl(130, 60%, 95%); border: 1px solid hsl(130, 60%, 80%); color: hsl(130, 80%, 25%); }
 .error-message { background-color: hsl(0, 100%, 97%); border: 1px solid hsl(0, 100%, 85%); color: hsl(0, 70%, 50%); }
 .success-message ion-icon { font-size: 3em; margin-bottom: 10px; color: hsl(130, 70%, 40%); }
-.success-message h3 { margin-bottom: 10px; }
+.success-message h3 { margin-bottom: 10px; color: var(--eerie-black); }
 .success-message .btn { margin-top: 15px; }
 
 /* Contact Info List */
@@ -1087,6 +1286,7 @@ textarea.input-field {
   visibility: hidden;
   transform: translateY(20px); /* Start lower */
   transition: var(--transition-1), transform 0.3s ease;
+  border: none; /* Ensure no border */
 }
 
 .back-top-btn.active {
@@ -1153,6 +1353,8 @@ textarea.input-field {
   cursor: pointer;
   padding: 5px; /* Click area */
   transition: color var(--transition-1);
+  background: none; /* Ensure no background */
+  border: none; /* Ensure no border */
 }
 
 .close-popup:is(:hover, :focus-visible) {
@@ -1183,18 +1385,22 @@ textarea.input-field {
 
 .popup-content p { /* Description */
     margin-bottom: 20px;
+    line-height: var(--lh-base); /* Ensure consistent line height */
 }
 
 .popup-content .services h4 {
     font-size: var(--fs-5);
     font-weight: var(--fw-700);
     margin-bottom: 10px;
+    color: var(--eerie-black);
 }
 
 .popup-content .services ul {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  padding: 0; /* Reset list padding */
+  list-style: none; /* Reset list style */
 }
 
 .popup-content .services li {
@@ -1223,7 +1429,7 @@ textarea.input-field {
 
   .contact-list { grid-template-columns: 1fr 1fr; } /* 2 columns */
 
-  /* How We Work: Adjust layout slightly if needed */
+  /* How We Work: Adjust layout */
   .process-step {
       grid-template-areas: /* Horizontal layout */
           "number image"
@@ -1233,6 +1439,7 @@ textarea.input-field {
       align-items: start; /* Align content top */
       padding-left: 70px; /* Space for number */
       padding-bottom: 0; /* Reset bottom padding */
+      column-gap: 30px; /* Gap between content/image */
   }
 
   .process-step:not(:last-child)::after {
@@ -1249,7 +1456,7 @@ textarea.input-field {
       top: 0;
       margin-bottom: 0;
   }
-  .step-image { margin-top: 10px; /* Add space above image */ }
+  .step-image { margin-top: 0; /* Reset margin */ }
 }
 
 /* Tablet Landscape (768px and up) */
@@ -1271,18 +1478,22 @@ textarea.input-field {
       text-align: left;
       gap: 40px;
   }
-  .hero-content { order: 1; } /* Content first */
-  .hero-media-container { order: 2; } /* Media second */
+  .hero-content { order: 1; flex: 1; } /* Content first, allow flex grow */
+  .hero-media-container { order: 2; flex-basis: 40%; max-width: 40%;} /* Media second, control size */
   .hero .btn { margin-inline: 0; } /* Align button left */
-  .hero-text { margin-inline: 0; }
+  .hero-text { margin-inline: 0; max-width: none; } /* Reset max-width */
+  .hero-subtitle, .hero-title { padding-inline-start: 0; } /* Remove padding if line removed below */
+  .hero-subtitle::before { display: none; } /* Optionally remove line on desktop */
+
 
   .contact-form { padding: 40px; }
 
-  /* How We Work: Align image differently */
+  /* How We Work: Align image differently for even steps */
   .process-step:nth-child(even) {
       grid-template-areas:
           "image number"
           "image content";
+      grid-template-columns: 1fr auto; /* Image takes flex space */
       padding-left: 0;
       padding-right: 70px; /* Space for number on right */
   }
@@ -1291,6 +1502,12 @@ textarea.input-field {
       left: auto;
       right: 25px; /* Line on right */
   }
+
+  /* Quote Form: Two columns for checkboxes */
+    .checkbox-group {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 20px; /* Row and column gap */
+    }
 
 }
 
@@ -1316,6 +1533,7 @@ textarea.input-field {
     all: unset;
     display: flex; /* Make navbar flex container */
     align-items: center;
+    margin-left: auto; /* Push nav to the right */
   }
 
   .navbar-list {
@@ -1356,12 +1574,13 @@ textarea.input-field {
 
   .mobile-socials { display: none; } /* Hide mobile socials block */
 
-  /* Hero subtitle line */
+  /* Hero subtitle line (optional for desktop) */
   .hero-subtitle {
     position: relative;
     padding-inline-start: 15px;
   }
   .hero-subtitle::before {
+    display: block; /* Re-enable if desired */
     content: "";
     position: absolute;
     top: 0;
@@ -1422,4 +1641,10 @@ textarea.input-field {
 
   /* How We Work: Increase text size/spacing */
   .process-step .step-content { font-size: var(--fs-5); }
+
+  /* Quote form: More columns for checkboxes */
+    .checkbox-group {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
 }
