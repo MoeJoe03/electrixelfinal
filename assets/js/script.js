@@ -1,499 +1,523 @@
 'use strict';
 
 /**
- * Utility function to add event listeners
- * @param {Element | NodeList | Window} elem - The element or elements to attach the event to
- * @param {string} type - The event type (e.g., 'click')
- * @param {Function} callback - The function to execute when the event triggers
+ * Utility function to add event listeners efficiently to one or more elements.
+ * @param {Element | NodeList | Window} elements - The element, NodeList, or window to attach the event to.
+ * @param {string} eventType - The event type string (e.g., 'click').
+ * @param {Function} callback - The function to execute when the event triggers.
  */
-const addEventOnElements = function (elem, type, callback) {
-  if (!elem) return; // Exit if element doesn't exist
-  if (elem instanceof NodeList || Array.isArray(elem)) {
-    elem.forEach(item => item.addEventListener(type, callback));
-  } else {
-    elem.addEventListener(type, callback);
-  }
+const addEventOnElements = function (elements, eventType, callback) {
+    if (!elements) return; // Exit if elements don't exist
+
+    if (elements instanceof NodeList || Array.isArray(elements)) {
+        elements.forEach(element => element.addEventListener(eventType, callback));
+    } else {
+        elements.addEventListener(eventType, callback);
+    }
 };
 
 /**
- * Initializes the preloader animation
+ * Initializes the preloader: handles its display, fade-out animation,
+ * and removal from the DOM. Also triggers hero visibility.
  */
 const initPreloader = () => {
-  const preloader = document.querySelector('.preloader');
+    const preloader = document.querySelector('.preloader');
+    const heroSection = document.querySelector('.hero'); // Used to trigger potential hero animations
 
-  if (!preloader) {
-    console.warn("Preloader element not found.");
-    return;
-  }
+    if (!preloader) {
+        // If preloader element is missing, try to ensure hero is visible anyway
+        if (heroSection) heroSection.classList.add('hero-visible');
+        return;
+    }
 
-  // Add class to body to prevent scrolling while preloader is visible
-  document.body.classList.add('preloader-active');
+    // Prevent scrolling while preloader is active
+    document.body.classList.add('preloader-active');
 
-  window.addEventListener('load', () => {
-    // Use a timeout to ensure the entry animation plays fully
-    // and to give a minimum perceived load time. Adjust as needed.
+    window.addEventListener('load', () => {
+        // Use a small timeout to ensure preloader is visible for a minimum duration
+        setTimeout(() => {
+            if (preloader) {
+                preloader.classList.add('loaded'); // Trigger fade-out CSS transition
+                document.body.classList.remove('preloader-active'); // Re-enable scrolling
+
+                // Optionally trigger hero-specific animations if '.hero-visible' class is defined in CSS
+                if (heroSection) {
+                    heroSection.classList.add('hero-visible');
+                }
+
+                // Remove the preloader element after its fade-out transition completes
+                // IMPORTANT: This relies on a CSS transition applied to the 'opacity' property of the '.preloader.loaded' state.
+                preloader.addEventListener('transitionend', (e) => {
+                    // Ensure the event is for the opacity transition on the preloader itself
+                    if (e.target === preloader && e.propertyName === 'opacity') {
+                        preloader.remove();
+                    }
+                }, { once: true }); // Use 'once' to auto-remove listener after firing
+            } else {
+                 // Fallback: ensure hero is visible if preloader vanished unexpectedly
+                 if (heroSection) heroSection.classList.add('hero-visible');
+            }
+        }, 500); // Minimum display time in milliseconds
+    });
+
+    // Fallback: Force hide preloader if 'load' or 'transitionend' takes too long
     setTimeout(() => {
-      if (preloader) { // Check if preloader still exists
-        preloader.classList.add('loaded');
-        document.body.classList.remove('preloader-active'); // Re-enable scroll
-
-        // Optional: Remove the preloader from the DOM after the transition ends
-        preloader.addEventListener('transitionend', (e) => {
-          // Make sure it's the opacity transition on the preloader itself ending
-          if (e.target === preloader && e.propertyName === 'opacity') {
-             console.log("Preloader transition finished, removing element.");
-             preloader.remove();
-          }
-        }, { once: true }); // Use { once: true } so listener cleans itself up
-      }
-    }, 500); // Minimum display time in milliseconds (e.g., 500ms)
-  });
-
-  // Fallback: If 'load' takes too long (e.g., > 10 seconds), hide loader anyway
-  setTimeout(() => {
-      if (preloader && !preloader.classList.contains('loaded')) { // Check existence again
-          console.warn("Preloader forced hide due to timeout.");
-          preloader.classList.add('loaded');
-          document.body.classList.remove('preloader-active');
-           // Optionally remove immediately or after short delay
-           setTimeout(() => {
-              if(preloader) preloader.remove(); // Final check before removal
-           }, 1000);
-      }
-  }, 10000); // 10 seconds timeout
+        if (preloader && !preloader.classList.contains('loaded')) {
+            console.warn("Preloader forced hide due to timeout (10s). Check for slow-loading resources or JS errors.");
+            preloader.classList.add('loaded');
+            document.body.classList.remove('preloader-active');
+            if (heroSection && !heroSection.classList.contains('hero-visible')) {
+                heroSection.classList.add('hero-visible');
+            }
+            // Give transition some time before final removal in fallback case
+            setTimeout(() => {
+                if (preloader) preloader.remove();
+            }, 1000);
+        }
+    }, 10000); // 10 seconds fallback timeout
 };
 
 
 /**
- * Toggles mobile navigation menu
+ * Initializes the mobile navigation menu toggle functionality.
  */
 const initMobileMenu = () => {
-  const navbar = document.querySelector("[data-navbar]");
-  const navToggler = document.querySelector("[data-nav-toggler]");
-  const overlay = document.querySelector("[data-overlay]");
-  const navLinks = document.querySelectorAll("[data-nav-link]");
+    const navbar = document.querySelector("[data-navbar]");
+    const navToggler = document.querySelector("[data-nav-toggler]");
+    const overlay = document.querySelector("[data-overlay]");
+    const navLinks = document.querySelectorAll("[data-nav-link]");
 
-  if (!navbar || !navToggler || !overlay) {
-    console.warn("Mobile menu elements not found.");
-    return; // Exit if essential elements are missing
-  }
-
-  const toggleMenu = () => {
-    const isOpen = navbar.classList.toggle("active");
-    navToggler.classList.toggle("active");
-    overlay.classList.toggle("active");
-    document.body.classList.toggle("nav-active");
-    navToggler.setAttribute('aria-expanded', isOpen.toString());
-
-    // Accessibility: Trap focus within the menu when open
-    if (isOpen) {
-      // Logic to trap focus would go here (can be complex)
-      // For simplicity, we'll just focus the first link
-      const firstFocusable = navbar.querySelector('a[href], button:not([disabled])');
-      firstFocusable?.focus();
-    } else {
-        // Return focus to the toggle button when closing
-        navToggler.focus();
+    if (!navbar || !navToggler || !overlay) {
+        console.warn("Mobile menu component(s) not found (requires elements with [data-navbar], [data-nav-toggler], [data-overlay]).");
+        return;
     }
-  };
 
-  // Toggle menu on button click
-  addEventOnElements(navToggler, "click", toggleMenu);
+    const toggleMenu = () => {
+        const isOpen = navbar.classList.toggle("active");
+        navToggler.classList.toggle("active");
+        overlay.classList.toggle("active");
+        document.body.classList.toggle("nav-active"); // Prevent body scroll when menu is open
+        navToggler.setAttribute('aria-expanded', isOpen.toString());
 
-  // Close menu on overlay click
-  addEventOnElements(overlay, "click", toggleMenu);
-
-  // Close menu on nav link click (for single-page navigation or linking to index sections)
-  addEventOnElements(navLinks, "click", () => {
-    // Only close if the menu is active (visible)
-    if (navbar.classList.contains("active")) {
-        // Check if the link is to a different page or a hash link on the same page
-        const linkHref = event.target.getAttribute('href');
-        const isExternalOrDifferentPage = linkHref && !linkHref.startsWith('#') && !linkHref.startsWith(window.location.pathname + '#');
-        const isSamePageHashLink = linkHref && linkHref.startsWith('#');
-
-        // Close menu immediately for same-page hash links or if it's not a link click
-        // If linking to a different page, the menu will close on page load anyway.
-        if (isSamePageHashLink || !linkHref) {
-             toggleMenu();
+        if (isOpen) {
+            // Move focus to the first focusable element in the menu when opened
+            const firstFocusable = navbar.querySelector('a[href], button:not([disabled])');
+            firstFocusable?.focus(); // Optional chaining: only focus if found
+        } else {
+            // Return focus to the toggle button when the menu is closed
+            navToggler?.focus();
         }
-        // If linking to different page sections from quote.html back to index.html, still close
-        if (!isExternalOrDifferentPage && window.location.pathname.includes('quote.html')) {
+    };
+
+    // Event listeners for toggling the menu
+    addEventOnElements(navToggler, "click", toggleMenu);
+    addEventOnElements(overlay, "click", toggleMenu);
+
+    // Close menu when a navigation link is clicked (if it's a same-page link)
+    addEventOnElements(navLinks, "click", (event) => {
+        if (navbar.classList.contains("active")) {
+            const linkHref = event.target.getAttribute('href');
+            const currentPath = window.location.pathname;
+            const isOnQuotePage = currentPath.includes('quote.html');
+            const isLinkToIndexSection = linkHref?.includes('index.html#');
+            const isSamePageHashLink = linkHref?.startsWith('#');
+
+            // Close menu only for links navigating within the current page context
+            if (isSamePageHashLink || (isOnQuotePage && isLinkToIndexSection)) {
+                toggleMenu();
+            }
+            // External links or links to different pages will close implicitly via page load.
+        }
+    });
+
+    // Close menu on Escape key press
+    const handleEscKey = (event) => {
+        if (event.key === "Escape" && navbar.classList.contains("active")) {
             toggleMenu();
         }
-    }
-  });
-
-  // Close menu on 'Escape' key press
-  const handleEscKey = (event) => {
-    if (event.key === "Escape" && navbar.classList.contains("active")) {
-      toggleMenu();
-    }
-  };
-  document.addEventListener("keydown", handleEscKey);
-
-  // Cleanup function (optional but good practice for SPAs)
-  // window.addEventListener('beforeunload', () => {
-  //   document.removeEventListener("keydown", handleEscKey);
-  // });
+    };
+    document.addEventListener("keydown", handleEscKey);
 };
 
 /**
- * Adds 'active' class to header and back-to-top button when scrolling down
+ * Adds 'active' class to header and back-to-top button when scrolling down.
  */
 const initHeaderAndScrollTop = () => {
-  const header = document.querySelector("[data-header]");
-  const backTopBtn = document.querySelector("[data-back-top-btn]");
+    const header = document.querySelector("[data-header]");
+    const backTopBtn = document.querySelector("[data-back-top-btn]");
 
-  if (!header || !backTopBtn) {
-    console.warn("Header or Back Top Button not found.");
-    return;
-  }
-
-  const handleScroll = () => {
-    if (window.scrollY > 100) {
-      header.classList.add("active");
-      backTopBtn.classList.add("active");
-    } else {
-      header.classList.remove("active");
-      backTopBtn.classList.remove("active");
+    if (!header && !backTopBtn) {
+        // Don't warn if neither exists, maybe it's intentional
+        return;
     }
-  };
 
-  window.addEventListener("scroll", handleScroll);
-  handleScroll(); // Initial check in case the page loads scrolled down
+    let isTicking = false; // Use requestAnimationFrame for performance
+
+    const handleScroll = () => {
+        if (!isTicking) {
+            window.requestAnimationFrame(() => {
+                const scrollY = window.scrollY;
+                if (header) {
+                    header.classList.toggle("active", scrollY > 100);
+                }
+                if (backTopBtn) {
+                    backTopBtn.classList.toggle("active", scrollY > 100);
+                }
+                isTicking = false;
+            });
+            isTicking = true;
+        }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true }); // Improve scroll performance
+    // Initial check in case the page loads already scrolled
+    handleScroll();
 };
 
 /**
- * Highlights the current page link in the navigation
+ * Initializes scroll-hijacking control for the 3D CSS carousel.
+ * Stops page scroll when the section is active and controls carousel instead.
+ * Includes Touch (Horizontal Swipe), Keyboard, and Arrow Button support.
+ */
+const initScrollHijackCarousel = () => {
+     const carousel = document.getElementById('carousel');
+     const projectSection = document.getElementById('project');
+     const prevBtn = document.getElementById('carousel-prev-btn');
+     const nextBtn = document.getElementById('carousel-next-btn');
+ 
+     if (!carousel || !projectSection || !prevBtn || !nextBtn) {
+         console.warn('Scroll hijack carousel elements not found (#carousel, #project, buttons).');
+         return;
+     }
+ 
+     // --- Configuration ---
+     const activationThreshold = 0.6;
+     const throttleDelay = 500;
+     const touchThresholdX = 50; // Min HORIZONTAL swipe pixels to trigger change
+     // ---------------------
+ 
+     let numItems = 6;
+     try {
+         const itemsVar = getComputedStyle(carousel).getPropertyValue('--items').trim();
+         const parsedItems = parseInt(itemsVar, 10);
+         if (!isNaN(parsedItems) && parsedItems > 0) numItems = parsedItems;
+     } catch(e) { /* use default */ }
+ 
+     let isLocked = false;
+     let isThrottled = false;
+     let currentPosition = 1;
+     let touchStartX = null; // Track touch start X position
+     let touchStartY = null; // Track touch start Y position (for comparing swipe axis)
+ 
+     // --- Helper function to update button disabled states ---
+     const updateButtonStates = () => {
+         if (!prevBtn || !nextBtn) return;
+         prevBtn.classList.toggle('disabled', currentPosition === 1);
+         nextBtn.classList.toggle('disabled', currentPosition === numItems);
+         prevBtn.setAttribute('aria-disabled', (currentPosition === 1).toString());
+         nextBtn.setAttribute('aria-disabled', (currentPosition === numItems).toString());
+     };
+ 
+     // --- Helper function to update position ---
+     const updatePosition = (newPosition) => {
+         if (newPosition >= 1 && newPosition <= numItems && newPosition !== currentPosition) {
+             currentPosition = newPosition;
+             if(document.body.contains(carousel)) {
+                 carousel.style.setProperty('--position', currentPosition);
+             }
+             updateButtonStates(); // Update buttons after position changes
+             isThrottled = true;
+             setTimeout(() => { isThrottled = false; }, throttleDelay);
+             return true; // Indicate change happened
+         }
+         return false; // No change
+     };
+ 
+     // --- Intersection Observer ---
+     const observerCallback = (entries) => { entries.forEach(entry => { isLocked = entry.isIntersecting && entry.intersectionRatio >= activationThreshold; if (!isLocked) isThrottled = false; }); };
+     const observerOptions = { root: null, threshold: activationThreshold };
+     const observer = new IntersectionObserver(observerCallback, observerOptions);
+     observer.observe(projectSection);
+ 
+     // --- Wheel Event Handler ---
+     const handleWheel = (event) => {
+         if (!isLocked || isThrottled) return;
+         const scrollDirection = event.deltaY;
+         let positionChanged = false;
+         if (scrollDirection > 0) { positionChanged = updatePosition(currentPosition + 1); }
+         else if (scrollDirection < 0) { positionChanged = updatePosition(currentPosition - 1); }
+         if (positionChanged) event.preventDefault();
+     };
+ 
+     // --- MODIFIED Touch Event Handlers for Horizontal Swipe ---
+     const handleTouchStart = (event) => {
+         if (!isLocked || event.touches.length !== 1) return; // Only handle single touch
+         touchStartX = event.touches[0].clientX;
+         touchStartY = event.touches[0].clientY;
+     };
+ 
+     const handleTouchMove = (event) => {
+         // Prevent vertical scroll WHILE swiping horizontally if section is locked
+         // This might need adjustment depending on desired feel vs interfering with vertical page scroll
+         if (!isLocked || !touchStartX || !touchStartY) return;
+ 
+         const touchCurrentX = event.touches[0].clientX;
+         const touchCurrentY = event.touches[0].clientY;
+         const deltaX = Math.abs(touchCurrentX - touchStartX);
+         const deltaY = Math.abs(touchCurrentY - touchStartY);
+ 
+         // If horizontal movement is dominant, prevent vertical scroll
+         if (deltaX > deltaY) {
+             event.preventDefault();
+         }
+         // If vertical is dominant, allow default vertical scroll (reset start coords?)
+         // else {
+         //     touchStartX = null; // Optional: allow vertical scroll to take over if dominant
+         //     touchStartY = null;
+         // }
+     };
+ 
+     const handleTouchEnd = (event) => {
+         if (!isLocked || isThrottled || !touchStartX || !touchStartY || event.changedTouches.length !== 1) {
+              // Reset if touch ended unexpectedly or conditions not met
+              touchStartX = null;
+              touchStartY = null;
+              return;
+         }
+ 
+         const touchEndX = event.changedTouches[0].clientX;
+         const touchEndY = event.changedTouches[0].clientY;
+ 
+         const deltaX = touchEndX - touchStartX; // Positive for swipe right, negative for swipe left
+         const deltaY = touchEndY - touchStartY;
+ 
+         // Check if swipe was primarily horizontal and exceeded threshold
+         if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > touchThresholdX) {
+             if (deltaX < 0) { // Swipe Left -> Next Card
+                 updatePosition(currentPosition + 1);
+             } else { // Swipe Right -> Previous Card
+                 updatePosition(currentPosition - 1);
+             }
+         }
+         // Reset touch start positions
+         touchStartX = null;
+         touchStartY = null;
+     };
+     // --- End of Modified Touch Handlers ---
+ 
+     // --- Keyboard Event Handler ---
+     const handleKeyDown = (event) => {
+         const targetTagName = event.target.tagName.toLowerCase();
+         if (['input', 'textarea', 'select'].includes(targetTagName) || !isLocked || isThrottled) return;
+         let newPosition = currentPosition; let shouldPreventDefault = false;
+         switch (event.key) {
+             case 'ArrowRight': case 'ArrowDown':
+                 if (currentPosition < numItems) { newPosition++; shouldPreventDefault = true; } break;
+             case 'ArrowLeft': case 'ArrowUp':
+                 if (currentPosition > 1) { newPosition--; shouldPreventDefault = true; } break;
+             // Allow PageUp/PageDown default behavior for faster scrolling through page? Optional.
+             // case 'PageDown': if (currentPosition < numItems) { newPosition++; shouldPreventDefault = true; } break;
+             // case 'PageUp': if (currentPosition > 1) { newPosition--; shouldPreventDefault = true; } break;
+             default: return;
+         }
+         if (shouldPreventDefault) { event.preventDefault(); updatePosition(newPosition); }
+     };
+ 
+     // --- Add Click Listeners for Buttons ---
+     prevBtn.addEventListener('click', () => { if (!isThrottled) { updatePosition(currentPosition - 1); } });
+     nextBtn.addEventListener('click', () => { if (!isThrottled) { updatePosition(currentPosition + 1); } });
+ 
+     // --- Add All Event Listeners ---
+     window.addEventListener('wheel', handleWheel, { passive: false });
+     window.addEventListener('touchstart', handleTouchStart, { passive: true });
+     window.addEventListener('touchmove', handleTouchMove, { passive: false });
+     window.addEventListener('touchend', handleTouchEnd, { passive: true });
+     window.addEventListener('keydown', handleKeyDown);
+ 
+     // --- Initial State & Resize ---
+     try { const initialPos = parseInt(getComputedStyle(carousel).getPropertyValue('--position').trim(), 10); if(!isNaN(initialPos)) currentPosition = initialPos; } catch(e) { /* Use default */ }
+     if(document.body.contains(carousel)) { carousel.style.setProperty('--position', currentPosition); }
+     const calculateDimensions = () => { sectionTop = projectSection.offsetTop; sectionHeight = projectSection.offsetHeight; };
+     setTimeout(() => { calculateDimensions(); updateButtonStates(); }, 100);
+     window.addEventListener('resize', () => {
+         clearTimeout(window.resizeTimeout);
+         window.resizeTimeout = setTimeout(() => { if (typeof calculateDimensions === 'function') calculateDimensions(); updateButtonStates(); }, 250);
+     });
+ 
+ }; // End initScrollHijackCarousel
+
+/**
+ * Highlights the current navigation link based on URL path and hash.
  */
 const highlightCurrentNavLink = () => {
     const navLinks = document.querySelectorAll('.navbar-link[data-nav-link]');
-    // Get current page filename (e.g., "index.html", "quote.html") or section ID
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    const currentHash = window.location.hash; // e.g., "#about"
+    if (!navLinks || navLinks.length === 0) return;
+
+    let currentPath = window.location.pathname.split('/').pop() || 'index.html'; // Default to index.html
+    const currentHash = window.location.hash;
 
     navLinks.forEach(link => {
         const linkHref = link.getAttribute('href');
-        const linkPath = linkHref.split('#')[0]; // Get path part (e.g., "index.html", "quote.html", "")
-        const linkHash = '#' + linkHref.split('#')[1]; // Get hash part (e.g., "#about")
+        if (!linkHref) return;
+
+        const linkUrl = new URL(linkHref, window.location.href); // Resolve relative URLs
+        let linkPath = linkUrl.pathname.split('/').pop() || 'index.html';
+        const linkHash = linkUrl.hash;
 
         let isActive = false;
 
-        // Check 1: Direct match for page (e.g., quote.html matches quote.html)
-        if (linkPath && linkPath === currentPath) {
-             // If on a specific page like quote.html, highlight the link *to* that page if it exists
-             // For now, we don't have direct page links in nav, only section links or home
-             isActive = true; // This might need refinement based on actual nav structure
+        // Match if paths are the same AND (hashes match OR neither has a hash)
+        if (linkPath === currentPath && linkHash === currentHash) {
+            isActive = true;
+        }
+        // Special case: "Home" link (#home or index.html) active on index.html root
+        else if (currentPath === 'index.html' && !currentHash && (linkHref === '#home' || (linkPath === 'index.html' && !linkHash))) {
+             isActive = true;
         }
 
-        // Check 2: Hash link match on the *same* page (e.g., on index.html, #about matches #about)
-         if (linkHash && linkHash !== '#' && (!linkPath || linkPath === currentPath || linkPath === 'index.html') && linkHash === currentHash) {
-           isActive = true;
-         }
-
-        // Check 3: Special case for "Home" link (#home or index.html) when on the root/index page without a hash
-        if ((linkHref === '#home' || linkHref === 'index.html') && (currentPath === 'index.html' || currentPath === '') && !currentHash) {
-           isActive = true;
-         }
-         // Check 4: If on quote.html, highlight the link that goes to that page (if one existed)
-         // Currently, nav links point back to index.html sections.
-
+        link.classList.toggle('active', isActive);
         if (isActive) {
-            link.classList.add('active');
             link.setAttribute('aria-current', 'page');
         } else {
-            link.classList.remove('active');
             link.removeAttribute('aria-current');
         }
     });
-     // Listen for hash changes to update active link on same page navigation
-     window.addEventListener('hashchange', highlightCurrentNavLink);
 };
 
 
 /**
- * Initializes Project Details Popup functionality
- */
-const initProjectPopup = () => {
-  // --- Project Data ---
-  // Consider moving this to a separate JSON file or fetching it
-  const projectDetails = {
-    "designing-a-better-cinema-experience": {
-      title: "Designing A Better Cinema Experience",
-      description: "We focused on redesigning the online ticket purchasing flow to be more intuitive and user-friendly, incorporating user research and iterative testing.",
-      services: ["UX Design", "User Research", "Prototyping", "Usability Testing"],
-      images: ["./assets/images/project-1.jpg", "./assets/images/project-placeholder-1.png", "./assets/images/project-placeholder-2.png"] // Added placeholder images
-    },
-    "building-design-process": {
-        title: "Building Design Process Within Teams",
-        description: "Developed and implemented an agile workflow tailored for design teams, enhancing collaboration and efficiency. Included comprehensive team training sessions.",
-        services: ["Process Design", "Agile Methodology", "Team Training", "Workflow Optimization"],
-        images: ["./assets/images/project-2.jpg"]
-    },
-    "how-intercom-brings-play-into-their-design-process": { // Matches alt text better
-        title: "How Intercom Brings Play Into Their Design Process", // Title from HTML
-        description: "A case study on redesigning an e-commerce platform, focusing on keyword targeting and improving the overall user journey for better conversion rates.",
-        services: ["Keyword Targeting", "E-commerce Strategy", "UI/UX Design", "Conversion Rate Optimization"],
-        images: ["./assets/images/project-3.jpg"]
-    },
-    "stuck-with-to-do-list-i-created-a-new-app-for": { // Matches alt text
-        title: "Stuck With To-Do List, I Created A New App For", // Title from HTML
-        description: "Developed a new mobile application from concept to launch, focusing on intuitive task management features and leveraging targeted email marketing campaigns.",
-        services: ["Mobile App Development", "UI/UX Design", "Email Marketing", "Feature Prioritization"],
-        images: ["./assets/images/project-4.jpg"]
-    },
-    "examples-of-different-types-of-sprints": { // Matches alt text
-        title: "Examples Of Different Types Of Sprints", // Title from HTML
-        description: "Analyzed and documented various sprint methodologies, providing clear examples and reporting frameworks to help teams choose the most effective approach.",
-        services: ["Marketing & Reporting", "Agile Coaching", "Process Analysis", "Sprint Planning"],
-        images: ["./assets/images/project-5.jpg"]
-    },
-    "redesigning-the-new-york-times-app": { // Matches alt text
-        title: "Redesigning The New York Times App", // Title from HTML
-        description: "A conceptual project focused on redesigning a major news application, emphasizing improved navigation, content discovery, and cross-platform consistency.",
-        services: ["Development", "UI/UX Redesign", "Conceptual Design", "Cross-Platform Strategy"],
-        images: ["./assets/images/project-6.jpg"]
-    }
-    // Add other projects here...
-  };
-
-  const projectCards = document.querySelectorAll('.project-card');
-  let activePopup = null; // To keep track of the currently open popup
-  let focusedElementBeforePopup = null; // For accessibility
-
-  const closePopup = () => {
-    if (activePopup) {
-      activePopup.classList.remove('active');
-      document.body.style.overflow = ''; // Restore body scroll
-
-      // Allow transition before removing
-      activePopup.addEventListener('transitionend', () => {
-           if (activePopup) activePopup.remove(); // Ensure it exists before removing
-           activePopup = null;
-           if (focusedElementBeforePopup) {
-             focusedElementBeforePopup.focus(); // Return focus
-           }
-      }, { once: true });
-
-       // Fallback removal if transitionend doesn't fire
-        setTimeout(() => {
-            if (activePopup) activePopup.remove();
-             if (focusedElementBeforePopup) focusedElementBeforePopup.focus();
-        }, 500); // Slightly longer than CSS transition
-
-    }
-  };
-
-  projectCards.forEach(card => {
-    const viewButton = card.querySelector('.btn-primary.view-details'); // More specific selector
-    const image = card.querySelector('img');
-    const cardTitleElement = card.querySelector('.card-title');
-
-    if (!viewButton || !image || !cardTitleElement) return;
-
-    // Generate projectId from image alt text (simple conversion)
-    const projectId = image.alt.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
-    const project = projectDetails[projectId];
-
-    if (!project) {
-        console.warn(`Project details not found for ID: ${projectId} (from alt: "${image.alt}")`);
-        // Optionally disable or hide the button if details are missing
-        // viewButton.style.display = 'none';
-        return;
-    }
-    // Use title from data if available, otherwise fallback to card title
-    const projectTitle = project.title || cardTitleElement.textContent.trim();
-
-    viewButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      focusedElementBeforePopup = document.activeElement; // Store current focus
-
-      // Create popup structure
-      const popupHTML = `
-        <div class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popup-title-${projectId}">
-          <div class="popup-content">
-            <button class="close-popup" aria-label="Close dialog">&times;</button>
-            <h3 id="popup-title-${projectId}">${projectTitle}</h3>
-            ${project.images && project.images.length > 0 ? `
-              <div class="image-gallery">
-                ${project.images.map(img => `<img src="${img}" alt="${projectTitle} - Screenshot" class="popup-img" loading="lazy">`).join('')}
-              </div>` : ''}
-            <p>${project.description || 'No description available.'}</p>
-            ${project.services && project.services.length > 0 ? `
-              <div class="services">
-                <h4>Services Provided:</h4>
-                <ul>
-                  ${project.services.map(service => `<li>${service}</li>`).join('')}
-                </ul>
-              </div>` : ''}
-          </div>
-        </div>
-      `;
-
-      // --- Close any existing popup before opening a new one ---
-       if (activePopup) {
-           closePopup();
-           // Wait a moment for the old one to start closing before adding the new one
-           setTimeout(() => createAndShowPopup(popupHTML, projectId), 50);
-       } else {
-           createAndShowPopup(popupHTML, projectId);
-       }
-
-    });
-  });
-
-    const createAndShowPopup = (popupHTML, projectId) => {
-        document.body.insertAdjacentHTML('beforeend', popupHTML);
-        activePopup = document.body.lastElementChild; // Get the newly added overlay
-
-        // Short delay to allow element rendering before adding active class for transition
-        requestAnimationFrame(() => { // Use requestAnimationFrame for smoother start
-             if(activePopup) {
-                 activePopup.classList.add('active');
-                 document.body.style.overflow = 'hidden'; // Prevent body scroll
-
-                 // Focus the close button or the popup container for accessibility
-                 const closeBtn = activePopup.querySelector('.close-popup');
-                 closeBtn?.focus();
-             }
-       });
-
-        // Event listeners for closing the popup
-        const closeBtn = activePopup.querySelector('.close-popup');
-        addEventOnElements(closeBtn, 'click', closePopup);
-        activePopup.addEventListener('click', (event) => {
-            // Close only if clicking the overlay itself, not the content
-            if (event.target === activePopup) {
-            closePopup();
-            }
-        });
-    };
-
-
-    // Global listener for Escape key to close popup
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && activePopup) {
-            closePopup();
-        }
-    });
-};
-
-
-/**
- * Handles form submissions using Formspree
+ * Handles AJAX form submissions using Formspree.
  */
 const initForms = () => {
-  const forms = document.querySelectorAll('.contact-form[action*="formspree.io"]'); // Target Formspree forms
+    // IMPORTANT: Ensure the 'action' attribute in your HTML forms points to your correct Formspree endpoint.
+    const forms = document.querySelectorAll('form[action*="formspree.io"]');
 
-  forms.forEach(form => {
-    const submitBtn = form.querySelector('button[type="submit"]');
-    if (!submitBtn) return;
+    forms.forEach(form => {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (!submitBtn) return;
 
-    const originalBtnText = submitBtn.textContent;
+        const originalBtnText = submitBtn.textContent;
+        let formWrapper = form.parentElement; // Assume form is direct child of its container for messages
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent default browser submission
 
-      // Remove previous error messages
-      const existingError = form.querySelector('.error-message');
-      if (existingError) existingError.remove();
+            // Clear previous status messages within this form's context
+            formWrapper?.querySelector('.error-message')?.remove();
+            formWrapper?.querySelector('.success-message')?.remove();
 
-      // Basic Check: Ensure required fields are not empty (HTML5 validation handles more)
-      let isValid = form.checkValidity(); // Use built-in validation
-      if (!isValid) {
-          // Optionally highlight invalid fields or show a general message
-          form.reportValidity(); // Trigger browser's validation UI
-          return;
-      }
 
-      // Indicate submission
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `Sending... <span class="spinner"></span>`; // Add spinner class
+            // --- Custom Validation for Quote Form Checkboxes ---
+            let customValidationPassed = true;
+            if (form.classList.contains('quote-form')) {
+                const servicesCheckboxes = form.querySelectorAll('input[name="service_needed[]"]');
+                if (servicesCheckboxes.length > 0) {
+                    const isServiceChecked = Array.from(servicesCheckboxes).some(checkbox => checkbox.checked);
+                    if (!isServiceChecked) {
+                        displayFormMessage(form, 'Please select at least one service.', 'error');
+                        customValidationPassed = false;
+                    }
+                }
+            }
+             // --- End Custom Validation ---
 
-      const formData = new FormData(form);
-      const formAction = form.getAttribute('action');
+            // Check basic HTML5 validation AFTER custom checks
+             if (!form.checkValidity() || !customValidationPassed) {
+                 if (!customValidationPassed) {
+                    // Focus the first checkbox if that was the error
+                     form.querySelector('input[name="service_needed[]"]')?.focus();
+                 } else {
+                    // Trigger browser's default validation UI for other errors
+                    form.reportValidity();
+                 }
+                 return; // Stop submission if invalid
+             }
 
-      try {
-        const response = await fetch(formAction, {
-          method: 'POST',
-          body: formData,
-          headers: { 'Accept': 'application/json' }
+
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `Sending... <span class="spinner" role="status" aria-hidden="true"></span>`;
+
+            const formData = new FormData(form);
+            const formAction = form.getAttribute('action');
+
+            try {
+                const response = await fetch(formAction, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' } // Required for Formspree AJAX
+                });
+
+                if (response.ok) {
+                    // Success: Replace form content with success message
+                    const successMessageHTML = `
+                        <div class="success-message" role="alert">
+                          <ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon>
+                          <h3>Thank You!</h3>
+                          <p>Your message has been sent successfully. We'll be in touch soon.</p>
+                          <a href="index.html" class="btn btn-primary" style="margin-top: 15px;">Back to Home</a>
+                        </div>`;
+                    form.innerHTML = successMessageHTML; // Replace form content
+                    form.parentElement.querySelector('.form-subtitle')?.remove(); // Clean up subtitles if any
+                    form.parentElement.querySelector('.form-label')?.remove(); // Clean up labels if any
+
+                } else {
+                    // Handle server-side errors from Formspree
+                    const responseData = await response.json();
+                    const errorMessage = responseData.errors?.map(err => `${err.field}: ${err.message}`).join(', ')
+                                       || `Submission failed (Status: ${response.status})`;
+                    throw new Error(errorMessage);
+                }
+
+            } catch (error) {
+                console.error("Form submission error:", error);
+                displayFormMessage(form, `Submission failed: ${error.message || 'Please check your connection and try again.'}`, 'error');
+
+                // Re-enable the button and restore original text on error
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
         });
 
-        if (response.ok) {
-          // Success! Replace form content
-          form.innerHTML = `
-            <div class="success-message">
-              <ion-icon name="checkmark-circle-outline"></ion-icon> <h3>Thank You!</h3>
-              <p>Your message has been sent successfully. We'll be in touch soon.</p>
-              <a href="index.html" class="btn btn-primary" style="margin-top: 15px;">Back to Home</a>
-            </div>
-          `;
-        } else {
-            // Handle server errors (e.g., Formspree config issue)
-            const responseData = await response.json();
-            const errorMessage = responseData.errors?.map(err => err.message).join(', ') || `Form submission failed (Status: ${response.status})`;
-             throw new Error(errorMessage);
-        }
-      } catch (error) {
-        console.error("Form submission error:", error);
-        // Display error message within the form area
-        const errorElement = document.createElement('div');
-        errorElement.className = 'error-message';
-        errorElement.textContent = `Submission failed: ${error.message || 'Please try again.'}`;
-        // Insert error before the submit button if possible, or append
-         if (submitBtn) {
-             form.insertBefore(errorElement, submitBtn);
-         } else {
-             form.appendChild(errorElement);
-         }
-
-        // Re-enable button
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnText; // Restore original text (without spinner)
-
-      }
+         // Optional: Clear general error messages on form input
+         form.addEventListener('input', () => {
+             formWrapper?.querySelector('.error-message')?.remove();
+         });
     });
 
-    // Optional: Clear custom error styling on input
-    form.addEventListener('input', (e) => {
-        if (e.target.hasAttribute('required')) {
-            // Clear any custom styles you might add for errors
-             e.target.style.borderColor = ''; // Example reset
-        }
-        // Remove error message if it exists
-         const errorMsg = form.querySelector('.error-message');
-         if (errorMsg) errorMsg.remove();
-    });
-  });
+    // Helper to display messages consistently
+    const displayFormMessage = (formElement, message, type = 'error') => {
+         const messageElement = document.createElement('div');
+         messageElement.className = `${type}-message`; // Assumes '.error-message' or '.success-message' class exists
+         messageElement.textContent = message;
+         messageElement.setAttribute('role', 'alert');
+         // Insert message before the form itself, assuming form is inside a wrapper
+         formElement.parentNode.insertBefore(messageElement, formElement);
+    };
 };
 
+
 /**
- * Initializes video functionality (Hero fallback, About play/pause)
+ * Initializes video functionality: Hero fallback and About play/pause controls.
  */
 const initVideos = () => {
-    // Hero Video Fallback
+    // --- Hero Video ---
     const heroVideo = document.querySelector('.hero-video');
     if (heroVideo) {
         const fallbackImage = document.querySelector('.hero-media-container .img-cover');
         heroVideo.addEventListener('error', (e) => {
-            console.warn('Hero video failed to load:', e);
+            console.warn('Hero video failed to load. Displaying fallback image.', e);
             heroVideo.style.display = 'none';
-            if (fallbackImage) {
-                fallbackImage.style.display = 'block'; // Show fallback image
-            }
+            if (fallbackImage) fallbackImage.style.display = 'block';
         });
-        // Ensure video plays inline on iOS
-        heroVideo.setAttribute('playsinline', '');
-         // Attempt to play muted video on load (browser policies might prevent this)
+        heroVideo.setAttribute('playsinline', ''); // Essential for iOS inline playback
         heroVideo.play().catch(error => {
-            console.warn("Hero video autoplay failed:", error);
-            // Optional: Show controls or a play button overlay if autoplay fails
+            // Autoplay is often blocked, especially on mobile. This is expected.
+            // console.warn("Hero video autoplay failed (browser policy likely):", error);
         });
     }
 
-    // About Video Play/Pause Button
+    // --- About Video ---
     const aboutSection = document.querySelector('#about');
     if (aboutSection) {
         const videoContainer = aboutSection.querySelector('.video-container');
@@ -502,60 +526,93 @@ const initVideos = () => {
         const playIcon = playBtn?.querySelector('ion-icon');
 
         if (video && playBtn && playIcon) {
-            // Ensure video starts muted and potentially paused visually if needed
-            video.muted = true; // Ensure it's muted for potential autoplay
-            video.loop = true; // Ensure loop attribute is set
-            video.setAttribute('playsinline', ''); // Ensure playsinline
+            video.muted = true; // Mute for background/autoplay behavior
+            video.loop = true;
+            video.setAttribute('playsinline', '');
 
-             // Set initial button state based on video state (though usually starts paused)
-             if (video.paused) {
-                 playBtn.classList.remove('paused');
-                 playIcon.setAttribute('name', 'play');
-                 playBtn.setAttribute('aria-label', 'Play video');
-             } else {
-                  playBtn.classList.add('paused');
-                  playIcon.setAttribute('name', 'pause');
-                  playBtn.setAttribute('aria-label', 'Pause video');
-             }
+            const updateButtonState = () => {
+                if (!video || !playBtn || !playIcon) return;
+                const isPaused = video.paused || video.ended;
+                playBtn.classList.toggle('paused', !isPaused);
+                playIcon.setAttribute('name', isPaused ? 'play' : 'pause');
+                playBtn.setAttribute('aria-label', isPaused ? 'Play video' : 'Pause video');
+            };
 
             playBtn.addEventListener('click', () => {
                 if (video.paused || video.ended) {
-                    video.play().then(() => {
-                         playBtn.classList.add('paused'); // Indicate it's playing
-                         playIcon.setAttribute('name', 'pause');
-                         playBtn.setAttribute('aria-label', 'Pause video');
-                    }).catch(error => console.error("Video play failed:", error));
+                    video.play().catch(error => console.error("About video play failed:", error));
                 } else {
                     video.pause();
-                    playBtn.classList.remove('paused');
-                    playIcon.setAttribute('name', 'play');
-                    playBtn.setAttribute('aria-label', 'Play video');
                 }
             });
 
-             // Optional: Reset button when video ends (if not looping)
-             if (!video.loop) {
-                 video.addEventListener('ended', () => {
-                     playBtn.classList.remove('paused');
-                     playIcon.setAttribute('name', 'play');
-                     playBtn.setAttribute('aria-label', 'Play video');
-                 });
-             }
-             // Attempt to play initially (might be blocked by browser)
-             video.play().catch(error => {
-                 console.warn("About video initial autoplay failed:", error);
-                 // Ensure button shows 'play' if autoplay failed
-                 playBtn.classList.remove('paused');
-                 playIcon.setAttribute('name', 'play');
-                 playBtn.setAttribute('aria-label', 'Play video');
-             });
+            // Update button state based on video events
+            video.addEventListener('play', updateButtonState);
+            video.addEventListener('pause', updateButtonState);
+            video.addEventListener('ended', updateButtonState); // In case loop=false is set later
+
+            // Attempt initial play and set initial button state
+            video.play().catch(error => {
+                // console.warn("About video autoplay failed:", error);
+                updateButtonState(); // Ensure button shows 'play' if autoplay fails
+            });
+            updateButtonState(); // Set initial state reliably
         }
     }
 };
 
+/**
+ * Initializes Intersection Observer for scroll-triggered animations.
+ */
+const initScrollAnimations = () => {
+    // IMPORTANT: This requires corresponding CSS rules for the '.in-view' class
+    // to define the target state of the animation/transition, and potentially
+    // initial styles (like opacity: 0, transform: translateY(X)) on the elements themselves.
+    if (!('IntersectionObserver' in window)) {
+        console.warn("IntersectionObserver not supported, scroll animations disabled. Showing all sections.");
+        // Fallback: Make all sections visible immediately
+        document.querySelectorAll('main > article > section').forEach(section => section.classList.add('in-view'));
+        return;
+    }
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15 // Trigger when 15% is visible
+    };
+
+    const observerCallback = (entries, observer) => {
+        entries.forEach(entry => {
+            // Specific toggle for CTA Connect (allows animation to reverse)
+            if (entry.target.classList.contains('cta-connect')) {
+                entry.target.classList.toggle('in-view', entry.isIntersecting);
+            }
+            // General handling: Add class once and stop observing
+            else {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    observer.unobserve(entry.target);
+                }
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const sectionsToAnimate = document.querySelectorAll('main > article > section');
+
+    sectionsToAnimate.forEach(section => {
+        // Exclude hero from default observation if it has separate handling (e.g., via preloader)
+        if (!section.classList.contains('hero')) {
+            observer.observe(section);
+        } else {
+            // Hero visibility might be handled by preloader logic adding '.hero-visible' or similar
+            // Or ensure it starts visible if no animation needed: section.classList.add('in-view');
+        }
+    });
+};
 
 /**
- * Updates the copyright year dynamically
+ * Updates the copyright year dynamically in the element with ID 'current-year'.
  */
 const updateCopyrightYear = () => {
     const yearSpan = document.getElementById('current-year');
@@ -564,26 +621,31 @@ const updateCopyrightYear = () => {
     }
 };
 
+
 /**
- * Main application initialization function
+ * Main application initialization function - calls all specific init functions.
  */
 const initApp = () => {
-  initPreloader(); // Initialize the preloader first
-  initMobileMenu();
-  initHeaderAndScrollTop();
-  highlightCurrentNavLink(); // Highlight nav link based on current page
-  initProjectPopup();
-  initForms();
-  initVideos();
-  updateCopyrightYear();
-
-  console.log("Electrixel App Initialized");
-};
-
-// --- Initialize the App ---
-// Run initialization after the DOM is fully loaded
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initApp);
-} else {
-  initApp(); // DOM is already loaded
-}
+     initPreloader();
+     initMobileMenu();
+     initHeaderAndScrollTop();
+     highlightCurrentNavLink(); // Highlight link on initial load
+     // initProjectPopup(); // <-- Keep removed or commented out
+     initForms();
+     initVideos();
+     initScrollAnimations();
+     updateCopyrightYear();
+     initScrollHijackCarousel(); // <-- CORRECT: Call added here at the end
+ };
+ 
+ // --- Initialize the App ---
+ // Run initialization after the DOM is fully loaded and parsed
+ if (document.readyState === 'loading') {
+     document.addEventListener('DOMContentLoaded', initApp);
+ } else {
+     // DOMContentLoaded has already fired
+     initApp();
+ }
+ 
+ // Update navigation highlighting if the URL hash changes (e.g., clicking internal links)
+ window.addEventListener('hashchange', highlightCurrentNavLink);
