@@ -27,11 +27,13 @@
 
 <body id="top">
 
-  <div class="preloader" aria-busy="true" aria-live="polite">
-    <div class="preloader-container">
-      <img src="./assets/images/electrixel-logo-white.png" alt="Electrixel Logo Loading..." class="preloader-logo">
+  <div class="preloader" data-preloader aria-busy="true" aria-live="polite">
+    <div class="preloader-layer blue-layer"></div>
+    <div class="preloader-layer black-layer-overlay"></div>
+    <div class="preloader-logo-container">
+        <img src="./assets/images/electrixel-logo-white.png" alt="Electrixel Logo Loading..." class="preloader-logo">
     </div>
-  </div>
+</div>
 
   <div class="mobile-menu-overlay" data-overlay></div>
 
@@ -91,21 +93,66 @@
       </section>
 
       <section class="section service" id="service" aria-labelledby="service-title">
-        <div class="container">
-          <h2 class="h2 section-title" id="service-title">Services We Provide</h2>
-          <p class="section-text">
-            Driving growth through a comprehensive suite of digital services tailored to your unique business needs and objectives.
-          </p>
-          <ul class="grid-list">
-               <li><div class="service-card" tabindex="0"><div class="card-icon" style="background-color: #13c4a1"><ion-icon name="search-outline" aria-hidden="true"></ion-icon></div><h3 class="h3 card-title"><a href="#contact" class="card-title-link">SEO Optimization</a></h3><p class="card-text">Increase your visibility and rank higher in search results with our expert SEO strategies and implementation.</p></div></li>
-               <li><div class="service-card" tabindex="0"><div class="card-icon" style="background-color: #6610f2"><ion-icon name="megaphone-outline" aria-hidden="true"></ion-icon></div><h3 class="h3 card-title"><a href="#contact" class="card-title-link">Digital Marketing</a></h3><p class="card-text">Engage your target audience across multiple channels with effective paid advertising and content marketing campaigns.</p></div></li>
-               <li><div class="service-card" tabindex="0"><div class="card-icon" style="background-color: #ffb700"><ion-icon name="analytics-outline" aria-hidden="true"></ion-icon></div><h3 class="h3 card-title"><a href="#contact" class="card-title-link">Market Research</a></h3><p class="card-text">Gain valuable insights into your market landscape, competitors, and customer behavior to inform your strategy.</p></div></li>
-               <li><div class="service-card" tabindex="0"><div class="card-icon" style="background-color: #fd475a"><ion-icon name="key-outline" aria-hidden="true"></ion-icon></div><h3 class="h3 card-title"><a href="#contact" class="card-title-link">Keyword Targeting</a></h3><p class="card-text">Identify and target high-value keywords to attract relevant traffic and improve campaign performance.</p></div></li>
-               <li><div class="service-card" tabindex="0"><div class="card-icon" style="background-color: #00d280"><ion-icon name="mail-outline" aria-hidden="true"></ion-icon></div><h3 class="h3 card-title"><a href="#contact" class="card-title-link">Email Marketing</a></h3><p class="card-text">Nurture leads and build customer loyalty with personalized and automated email marketing campaigns.</p></div></li>
-               <li><div class="service-card" tabindex="0"><div class="card-icon" style="background-color: #ff612f"><ion-icon name="stats-chart-outline" aria-hidden="true"></ion-icon></div><h3 class="h3 card-title"><a href="#contact" class="card-title-link">Marketing & Reporting</a></h3><p class="card-text">Track performance, measure ROI, and receive detailed reports to continuously optimize your marketing efforts.</p></div></li>
-             </ul>
+
+        <div class="container section-title-container" style="margin-bottom: 0; padding-bottom: 40px;"> <h2 class="h2 section-title" id="service-title">Services We Provide</h2>
+             <p class="section-text">
+                 Driving growth through a comprehensive suite of digital services tailored to your unique business needs and objectives.
+             </p>
         </div>
-      </section>
+    
+        <div class="horizontal-scroll-wrapper">
+            <div class="sticky-container">
+                <div class="service-track">
+    
+                    <div class="service-slide">
+                        <div class="service-slide-content">
+                           <div class="card-icon" style="background-color: #13c4a1"><ion-icon name="search-outline" aria-hidden="true"></ion-icon></div>
+                           <h3 class="h3 slide-title">SEO Optimization</h3>
+                           <p class="slide-text">Increase your visibility and rank higher in search results with our expert SEO strategies and implementation.</p>
+                        </div>
+                    </div>
+    
+                    <div class="service-slide">
+                         <div class="service-slide-content">
+                            <div class="card-icon" style="background-color: #6610f2"><ion-icon name="megaphone-outline" aria-hidden="true"></ion-icon></div>
+                            <h3 class="h3 slide-title">Digital Marketing</h3>
+                            <p class="slide-text">Engage your target audience across multiple channels with effective paid advertising and content marketing campaigns.</p>
+                         </div>
+                    </div>
+    
+                    <div class="service-slide">
+                         <div class="service-slide-content">
+                            <div class="card-icon" style="background-color: #ffb700"><ion-icon name="analytics-outline" aria-hidden="true"></ion-icon></div>
+                            <h3 class="h3 slide-title">Market Research</h3>
+                            <p class="slide-text">Gain valuable insights into your market landscape, competitors, and customer behavior to inform your strategy.</p>
+                         </div>
+                    </div>
+    
+                    <div class="service-slide">
+                         <div class="service-slide-content">
+                             <div class="card-icon" style="background-color: #fd475a"><ion-icon name="key-outline" aria-hidden="true"></ion-icon></div>
+                             <h3 class="h3 slide-title">Keyword Targeting</h3>
+                             <p class="slide-text">Identify and target high-value keywords to attract relevant traffic and improve campaign performance.</p>
+                         </div>
+                    </div>
+    
+                    <div class="service-slide">
+                         <div class="service-slide-content">
+                             <div class="card-icon" style="background-color: #00d280"><ion-icon name="mail-outline" aria-hidden="true"></ion-icon></div>
+                             <h3 class="h3 slide-title">Email Marketing</h3>
+                             <p class="slide-text">Nurture leads and build customer loyalty with personalized and automated email marketing campaigns.</p>
+                         </div>
+                    </div>
+    
+                    <div class="service-slide">
+                         <div class="service-slide-content">
+                             <div class="card-icon" style="background-color: #ff612f"><ion-icon name="stats-chart-outline" aria-hidden="true"></ion-icon></div>
+                             <h3 class="h3 slide-title">Marketing & Reporting</h3>
+                             <p class="slide-text">Track performance, measure ROI, and receive detailed reports to continuously optimize your marketing efforts.</p>
+                         </div>
+                    </div>
+    
+                </div> </div> </div> </section>
 
       <section class="section project" id="project" aria-labelledby="project-title">
 

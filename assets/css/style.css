@@ -192,66 +192,118 @@ h3 { font-size: var(--fs-3); }
 ::-webkit-scrollbar-thumb:hover { background-color: var(--gray-web); }
 
 
-/* ================= PRELOADER STYLES START ================= */
-/*-----------------------------------*\
-  #PRELOADER STYLES
-\*-----------------------------------*/
+/* ================================================== */
+/* NEW Multi-Stage Preloader Styles                 */
+/* ================================================== */
 
-.preloader {
-  position: fixed;
-  inset: 0; /* Equivalent to top: 0; right: 0; bottom: 0; left: 0; */
-  background-color: #1360b8; /* User defined color */
-  z-index: 10000; /* Ensure it's above everything else */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+/* --- Keyframes for Animations --- */
 
-  /* Exit Transition (when .loaded is added) */
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), /* Fade out overlay */
-              visibility 0s linear 0.8s; /* Hide after fade */
-}
-
-.preloader-container {
-  /* Animation for the content */
-  opacity: 0;
-  transform: scale(0.8);
-  animation: preloaderContentEnter 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards; /* duration, timing, delay, fill-mode */
-}
-
-/* Entrance Animation for the content */
-@keyframes preloaderContentEnter {
+@keyframes preloaderLogoZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-/* Styling for the Logo */
-.preloader-logo {
-  display: block;
-  width: 300px; /* User defined size */
-  max-width: 80%; /* Prevent logo being too large */
-  height: auto; /* Maintain aspect ratio */
-  fill: #ffffff; /* Set SVG fill color if applicable */
+@keyframes preloaderWipeUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
 }
 
-/* Styles when loading is finished */
+/* --- Main Preloader Container --- */
+.preloader {
+  position: fixed;
+  inset: 0; /* top, right, bottom, left = 0 */
+  background-color: #000000; /* Stage 1: Initial Black Background */
+  z-index: 10000;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  overflow: hidden; /* Hide layers moving outside */
+
+  /* Final fade-out transition when .loaded class is added */
+  /* Delay needs to be AFTER all animations finish */
+  transition: opacity 0s ease-out 0s, visibility 0s linear 0s;
+}
+
+/* --- Background Wipe Layers --- */
+.preloader-layer {
+  position: absolute;
+  inset: 0;
+  transform: translateY(100%); /* Start below screen */
+  will-change: transform; /* Performance hint */
+}
+
+.preloader-layer.blue-layer {
+  /* --- CHOOSE YOUR BLUE COLOR --- */
+  background-color: #1b263b; /* Example Blue - Replace if needed */
+  /* --- End Color Choice --- */
+  z-index: 1; /* Blue layer is behind second black layer */
+  /* Animation: Wipe up after logo zoom */
+  animation: preloaderWipeUp 0.7s ease-in-out 1.0s forwards;
+  /* duration | timing-function | delay | fill-mode */
+}
+
+.preloader-layer.black-layer-overlay {
+  background-color: #000000; /* Black overlay */
+  z-index: 2; /* Second black layer is above blue */
+  /* Animation: Wipe up after blue layer wipe */
+  animation: preloaderWipeUp 0.7s ease-in-out 1.9s forwards;
+   /* duration | timing-function | delay | fill-mode */
+}
+
+/* --- Logo Container & Image --- */
+.preloader-logo-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Center using transform, initial state for animation */
+  transform: translate(-50%, -50%);
+  z-index: 3; /* Logo container on top */
+  /* Optional: Set a width/height if needed */
+}
+
+.preloader-logo {
+  display: block;
+  width: 300px; /* Adjust as needed */
+  max-width: 80%;
+  height: auto;
+  margin-inline: auto; /* Keep centered if container is wider */
+  opacity: 0; /* Start invisible */
+  transform: scale(0.5); /* Start small */
+  will-change: transform, opacity; /* Performance hint */
+
+  /* Animation: Zoom in at the start */
+  animation: preloaderLogoZoomIn 0.8s ease-out 0.2s forwards;
+   /* duration | timing-function | delay | fill-mode */
+}
+
+/* --- State when loaded (Fade out everything) --- */
 .preloader.loaded {
   opacity: 0;
   visibility: hidden;
-  pointer-events: none; /* Disable interaction when hidden */
+  pointer-events: none;
 }
 
-/* Optional: Fade out the content slightly before the overlay */
-.preloader.loaded .preloader-container {
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.4s ease, transform 0.4s ease; /* Exit animation */
+/* Stop animations when fading out to prevent conflicts (optional but safer) */
+/*
+.preloader.loaded .preloader-layer,
+.preloader.loaded .preloader-logo {
+   animation-play-state: paused;
 }
-/* ================= PRELOADER STYLES END =================== */
+*/
+
+/* ================================================== */
+/* End of NEW Preloader Styles                      */
+/* ================================================== */
 
 
 /*-----------------------------------*\
@@ -457,31 +509,138 @@ main > article > section.in-view {
 .hero-media-container .img-cover { display: none; }
 .video-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, transparent 70%); z-index: 1; pointer-events: none; }
 
-/*-----------------------------------*\
-  #SERVICE SECTION - Refined Styles
-\*-----------------------------------*/
+/* ================================================== */
+/* CSS for Service Section - Horizontal Scroll Effect */
+/* ================================================== */
 
-.service { background-color: var(--white-1); padding-block: var(--section-padding); border-top: 1px solid var(--cultured); border-bottom: 1px solid var(--cultured); }
-.service .section-title { margin-bottom: 15px; }
-.service .section-text { margin-bottom: 60px; }
-.service .grid-list { gap: 30px; }
-.service-card {
-  background-color: var(--white-1); border: 1px solid var(--cultured); box-shadow: none;
-  border-radius: var(--radius-5); padding: 30px 25px; text-align: left;
-  transition: border-color var(--transition-1), transform var(--transition-1), box-shadow var(--transition-1);
-  height: 100%; display: flex; flex-direction: column;
+/* Adjust base section padding if needed */
+.service {
+    padding-top: var(--section-padding);
+    /* Remove bottom padding as wrapper controls height */
+    padding-bottom: 0;
+     /* Ensure section background doesn't interfere if body isn't white */
+     background-color: var(--white-1);
 }
-.service-card:is(:hover, :focus-within) { transform: translateY(-5px); border-color: var(--red-crayola); box-shadow: var(--shadow-1); outline: none; }
-.service-card .card-icon {
-  width: 50px; height: 50px; font-size: 24px; margin-bottom: 20px; margin-inline: 0;
-  border-radius: var(--radius-circle); display: flex; align-items: center; justify-content: center; color: var(--white-1);
-}
-.service-card .card-title { font-size: var(--fs-4); margin-block: 0 10px; }
-.service-card .card-title a.card-title-link { color: var(--eerie-black); text-decoration: none; }
-.service-card:is(:hover, :focus-within) .card-title a.card-title-link { color: var(--red-crayola); }
-.service-card .card-text { font-size: var(--fs-6); color: var(--gray-web); line-height: 1.7; flex-grow: 1; }
 
-/* --- End of Service Section Refined Styles --- */
+/* Wrapper div that defines the scroll duration */
+.horizontal-scroll-wrapper {
+    /* Height determines scroll distance: e.g., 6 slides * 100vh = 600vh */
+    /* Adjust this based on how much scroll you want per slide */
+    /* Maybe start with 300vh or 400vh and adjust */
+    height: 400vh;
+    position: relative; /* Contains the sticky element */
+}
+
+/* The element that sticks to the viewport */
+.sticky-container {
+    position: sticky;
+    top: 0; /* Stick to the top */
+    height: 100vh; /* Take full viewport height */
+    width: 100%;
+    overflow: hidden; /* Hide parts of the track outside the viewport */
+}
+
+/* The wide track holding all slides, moves horizontally */
+.service-track {
+    display: flex;
+    /* Width = 100% * number of slides (6) */
+    width: 600%;
+    height: 100%;
+    /* JS will apply transform: translateX(...) here */
+    will-change: transform; /* Performance hint */
+}
+
+/* Individual slide styling */
+.service-slide {
+    /* Each slide takes up 1/6th of the track width = 100vw */
+    width: 100vw;
+    height: 100%;
+    flex-shrink: 0; /* Prevent slides from shrinking */
+
+    /* Center content within the slide */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 60px; /* Padding inside the slide */
+    box-sizing: border-box;
+
+    /* Optional: Background color per slide if desired */
+    /* background-color: var(--white-2); */
+}
+
+/* Container for content within a slide */
+.service-slide-content {
+    max-width: 800px; /* Max width for content */
+    width: 100%;
+    text-align: center; /* Center text elements */
+    background-color: var(--white-1); /* White background for content box */
+    padding: 50px 40px;
+    border-radius: var(--radius-8);
+    box-shadow: var(--shadow-2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Reuse icon styles (adjust size/margin if needed) */
+.service-slide-content .card-icon {
+    width: 60px; /* Slightly larger? */
+    height: 60px;
+    font-size: 30px;
+    margin-bottom: 25px; /* Increased spacing */
+    border-radius: var(--radius-circle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white-1);
+    flex-shrink: 0;
+}
+
+ /* Style the title within the slide */
+.service-slide-content .slide-title {
+    font-family: var(--ff-league-spartan);
+    font-size: var(--fs-2); /* Use theme size */
+    color: var(--eerie-black); /* Dark text on light background */
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+/* Style the text within the slide */
+.service-slide-content .slide-text {
+    font-family: var(--ff-roboto);
+    font-size: var(--fs-5); /* Use theme size */
+    color: var(--gray-web); /* Use theme text color */
+    line-height: 1.7;
+    max-width: 60ch; /* Limit text width for readability */
+}
+
+/* --- Mobile Adjustments for Horizontal Scroll --- */
+@media (max-width: 767px) {
+     .service-slide {
+        padding: 30px 20px; /* Less padding on mobile */
+     }
+     .service-slide-content {
+         padding: 30px 20px;
+     }
+     .service-slide-content .card-icon {
+         width: 50px;
+         height: 50px;
+         font-size: 24px;
+         margin-bottom: 20px;
+     }
+      .service-slide-content .slide-title {
+         font-size: var(--fs-3); /* Smaller title */
+     }
+     .service-slide-content .slide-text {
+         font-size: var(--fs-6); /* Smaller text */
+     }
+     /* Adjust wrapper height maybe? Or keep it long? */
+     /* .horizontal-scroll-wrapper { height: 400vh; } */
+}
+
+/* ================================================== */
+/* End of Service Section Horizontal Scroll CSS     */
+/* ================================================== */
 
 
 /* ================================================== */

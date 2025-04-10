@@ -19,64 +19,55 @@ const addEventOnElements = function (elements, eventType, callback) {
 /**
  * Initializes the preloader: handles its display, fade-out animation,
  * and removal from the DOM. Also triggers hero visibility.
+ * **UPDATED TIMING FOR MULTI-STAGE ANIMATION**
  */
 const initPreloader = () => {
-    const preloader = document.querySelector('.preloader');
-    const heroSection = document.querySelector('.hero'); // Used to trigger potential hero animations
+     // Use data attribute selector from new HTML (or '.preloader' if you didn't add data-preloader)
+     const preloader = document.querySelector('[data-preloader]') || document.querySelector('.preloader');
+     const heroSection = document.querySelector('.hero'); // Still useful for hero visibility if needed
+ 
+     if (!preloader) {
+         console.warn("Preloader element not found.");
+         // document.body.classList.remove('preloader-active');
+         return;
+     }
+ 
+     document.body.classList.add('preloader-active');
+ 
+     window.addEventListener('load', () => {
+         // --- ADJUSTED TIMEOUT ---
+         // Wait slightly less than the final CSS transition-delay (which was 3.0s in example)
+         // to allow CSS animations (logo zoom, blue wipe, black wipe) to finish first.
+         setTimeout(() => {
+             if (preloader) {
+                 preloader.classList.add('loaded'); // Trigger final fade-out via CSS transition
+                 document.body.classList.remove('preloader-active'); // Allow scroll
+ 
+// Optional: Remove element slightly after hiding for cleanup,
+                // since transitionend won't fire reliably with duration 0.
+                setTimeout(() => {
+                    if(preloader) preloader.remove();
+                }, 50); // Short delay after hiding
 
-    if (!preloader) {
-        // If preloader element is missing, try to ensure hero is visible anyway
-        if (heroSection) heroSection.classList.add('hero-visible');
-        return;
-    }
-
-    // Prevent scrolling while preloader is active
-    document.body.classList.add('preloader-active');
-
-    window.addEventListener('load', () => {
-        // Use a small timeout to ensure preloader is visible for a minimum duration
-        setTimeout(() => {
-            if (preloader) {
-                preloader.classList.add('loaded'); // Trigger fade-out CSS transition
-                document.body.classList.remove('preloader-active'); // Re-enable scrolling
-
-                // Optionally trigger hero-specific animations if '.hero-visible' class is defined in CSS
-                if (heroSection) {
-                    heroSection.classList.add('hero-visible');
-                }
-
-                // Remove the preloader element after its fade-out transition completes
-                // IMPORTANT: This relies on a CSS transition applied to the 'opacity' property of the '.preloader.loaded' state.
-                preloader.addEventListener('transitionend', (e) => {
-                    // Ensure the event is for the opacity transition on the preloader itself
-                    if (e.target === preloader && e.propertyName === 'opacity') {
-                        preloader.remove();
-                    }
-                }, { once: true }); // Use 'once' to auto-remove listener after firing
-            } else {
-                 // Fallback: ensure hero is visible if preloader vanished unexpectedly
-                 if (heroSection) heroSection.classList.add('hero-visible');
             }
-        }, 500); // Minimum display time in milliseconds
+        }, 2600); // <-- *** UPDATED DELAY TO MATCH ANIMATION END ***
+        // ------------------------
     });
 
-    // Fallback: Force hide preloader if 'load' or 'transitionend' takes too long
+// Fallback timeout remains useful
     setTimeout(() => {
         if (preloader && !preloader.classList.contains('loaded')) {
-            console.warn("Preloader forced hide due to timeout (10s). Check for slow-loading resources or JS errors.");
+            console.warn("Preloader forced hide due to fallback timeout (10s).");
             preloader.classList.add('loaded');
             document.body.classList.remove('preloader-active');
             if (heroSection && !heroSection.classList.contains('hero-visible')) {
-                heroSection.classList.add('hero-visible');
-            }
-            // Give transition some time before final removal in fallback case
-            setTimeout(() => {
-                if (preloader) preloader.remove();
-            }, 1000);
+                 heroSection.classList.add('hero-visible');
+             }
+             // Force remove if fallback triggered
+             setTimeout(() => { if (preloader) preloader.remove(); }, 50);
         }
-    }, 10000); // 10 seconds fallback timeout
-};
-
+    }, 10000);
+ };
 
 /**
  * Initializes the mobile navigation menu toggle functionality.
@@ -345,6 +336,119 @@ const initScrollHijackCarousel = () => {
      });
  
  }; // End initScrollHijackCarousel
+
+ // ==================================================
+// NEW FUNCTION: Service Section Horizontal Scroll
+// ==================================================
+/**
+ * Initializes the horizontal scroll effect for the Services section.
+ * Translates the .service-track based on vertical scroll progress
+ * while the .sticky-container is sticky.
+ */
+const initServiceHorizontalScroll = () => {
+     const scrollWrapper = document.querySelector('.horizontal-scroll-wrapper');
+     const stickyContainer = scrollWrapper?.querySelector('.sticky-container');
+     const serviceTrack = stickyContainer?.querySelector('.service-track');
+ 
+     // Exit if necessary elements aren't found
+     if (!scrollWrapper || !stickyContainer || !serviceTrack) {
+         console.warn('Horizontal scroll elements not found for Services section (#service .horizontal-scroll-wrapper > .sticky-container > .service-track).');
+         return;
+     }
+ 
+     let wrapperTop = 0;
+     let wrapperHeight = 0;
+     let trackWidth = 0;
+     let maxTranslateX = 0;
+     let stickyTop = 0; // The 'top' value from CSS where the container sticks
+     let isTicking = false;
+ 
+     // Function to calculate dimensions and max scroll distance
+     const calculateDimensions = () => {
+         wrapperTop = scrollWrapper.offsetTop;
+         wrapperHeight = scrollWrapper.offsetHeight;
+         trackWidth = serviceTrack.scrollWidth; // Actual width of the flex track
+         stickyTop = parseInt(window.getComputedStyle(stickyContainer).top) || 0; // Read sticky top value
+         // Max distance the track needs to move left = its total width minus one viewport width
+         maxTranslateX = trackWidth - window.innerWidth;
+     };
+ 
+     // Function to update track position based on scroll
+     const updateTrackPosition = () => {
+          const scrollY = window.scrollY;
+          // Calculate the scroll range where the sticky container is physically active
+          const stickyStartScrollY = wrapperTop - stickyTop;
+          const stickyEndScrollY = wrapperTop + wrapperHeight - window.innerHeight - stickyTop;
+  
+          // --- MODIFICATION START: Adjust when the horizontal scroll progress BEGINS ---
+          // Add a delay before progress starts counting.
+          // Example: Start progress calculation only after scrolling 1/4th of the viewport height PAST the sticky start point.
+          // Adjust the multiplier (0.25) or use a fixed pixel value if preferred.
+          const progressStartScrollY = stickyStartScrollY + (window.innerHeight * 0.25); // <-- Adjust 0.25 to change start point
+          // The progress calculation should now happen between progressStartScrollY and stickyEndScrollY
+          const progressScrollRange = stickyEndScrollY - progressStartScrollY;
+          // --- MODIFICATION END ---
+  
+          let currentTranslateX = 0;
+          let progress = 0; // Initialize progress
+  
+          if (scrollY <= progressStartScrollY) {
+               // Before the adjusted progress start point
+               currentTranslateX = 0;
+               progress = 0;
+          } else if (scrollY >= stickyEndScrollY) {
+               // After sticky ends (ensure full translation)
+               currentTranslateX = -maxTranslateX;
+               progress = 1;
+          } else {
+               // Within the adjusted progress range
+               const scrollDistance = scrollY - progressStartScrollY;
+               // Calculate progress (0 to 1) within the NEW scroll range
+               progress = (progressScrollRange > 0) ? Math.max(0, Math.min(1, scrollDistance / progressScrollRange)) : 0; // Clamp progress 0-1
+               // Calculate horizontal translation based on progress
+               currentTranslateX = -progress * maxTranslateX;
+          }
+  
+           // Apply the transform using requestAnimationFrame
+           if (!isTicking) {
+               window.requestAnimationFrame(() => {
+                   if (document.body.contains(serviceTrack)) { // Check element still exists
+                       serviceTrack.style.transform = `translateX(${currentTranslateX.toFixed(2)}px)`;
+                   }
+                   isTicking = false;
+               });
+               isTicking = true;
+           }
+      };
+      // +++ END OF NEW VERSION TO PASTE +++++++++++++++++++++++++++++++
+ 
+     // --- Initial Setup & Listeners ---
+ 
+     // Calculate initial dimensions after a short delay for layout stability
+     let initialCalcTimeout = setTimeout( () => {
+         calculateDimensions();
+         updateTrackPosition(); // Initial position update
+     }, 150); // Increased delay slightly
+ 
+     // Update on scroll
+     window.addEventListener('scroll', updateTrackPosition, { passive: true });
+ 
+     // Recalculate on resize (use debounce)
+     let resizeTimeout;
+     window.addEventListener('resize', () => {
+         clearTimeout(resizeTimeout);
+         // Clear initial calc timeout if resize happens quickly
+         clearTimeout(initialCalcTimeout);
+         resizeTimeout = setTimeout(() => {
+             calculateDimensions();
+             updateTrackPosition(); // Update immediately after recalc
+         }, 250);
+     });
+ 
+ }; // End initServiceHorizontalScroll
+ // ==================================================
+ // END OF NEW FUNCTION DEFINITION
+ // ==================================================
 
 /**
  * Highlights the current navigation link based on URL path and hash.
@@ -636,6 +740,9 @@ const initApp = () => {
      initScrollAnimations();
      updateCopyrightYear();
      initScrollHijackCarousel(); // <-- CORRECT: Call added here at the end
+
+     initServiceHorizontalScroll();
+     
  };
  
  // --- Initialize the App ---
