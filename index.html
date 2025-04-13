@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <script>
+    // Redirect to Coming Soon page
+    window.location.href = 'coming-soon.html';
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -69,25 +75,35 @@
     <article>
 
       <section class="section hero" id="home" aria-labelledby="hero-title">
-        <div class="container">
-          <div class="hero-content">
-            <p class="hero-subtitle">Electrixel Digital Solutions</p>
-            <h1 class="h1 hero-title" id="hero-title">Let's Transform Your Brand</h1>
-            <p class="hero-text">
-              Partner with us to elevate your online presence through data-driven strategies and creative digital experiences.
-            </p>
-            <a href="#contact" class="btn btn-primary">Get Started Today</a>
-          </div>
-
-          <div class="hero-media-container">
-            <video autoplay muted loop playsinline class="hero-video"
-                   aria-hidden="true" disablepictureinpicture
-                   poster="./assets/images/hero-poster.jpg"> <source src="./assets/videos/hero-video.mp4" type="video/mp4">
-                   <img src="./assets/images/hero-fallback.jpg" alt="Abstract digital background animation"
-                   class="img-cover"
-                   width="1080" height="1920">
-            </video>
-            <div class="video-overlay" aria-hidden="true"></div>
+        <!-- Video Section -->
+        <div class="hero-video-container">
+          <video muted loop playsinline class="hero-video"
+                 aria-hidden="true" disablepictureinpicture
+                 poster="./assets/images/hero-poster-new.jpg"
+                 preload="auto">
+            <source src="./assets/videos/main_3.mp4" type="video/mp4">
+            <source src="./assets/videos/main.webm" type="video/webm">
+            <img src="./assets/images/hero-fallback-new.jpg" alt="Abstract digital background animation"
+                 class="img-cover" width="1920" height="1080">
+            <p>Your browser does not support the video tag, or the video failed to load.</p>
+          </video>
+          <!-- Play Button Overlay (shown only if video fails to play) -->
+          <button class="play-video-btn" aria-label="Play video" style="display: none;">
+            <ion-icon name="play"></ion-icon>
+          </button>
+        </div>
+      
+        <!-- Text Section -->
+        <div class="hero-content-section">
+          <div class="container">
+            <div class="hero-content">
+              <p class="hero-subtitle">Electrixel Digital Solutions</p>
+              <h1 class="h1 hero-title" id="hero-title">Let's Transform Your Brand</h1>
+              <p class="hero-text">
+                Partner with us to elevate your online presence through data-driven strategies and creative digital experiences.
+              </p>
+              <a href="#contact" class="btn btn-primary">Get Started Today</a>
+            </div>
           </div>
         </div>
       </section>
@@ -179,76 +195,78 @@
     
     </section>
 
-      <section class="section stacking-cards-section" id="process" aria-labelledby="process-title">
+    <section class="section stacking-cards-section" id="process" aria-labelledby="process-title">
+      <div class="container section-title-container">
+        <h2 class="h2 section-title" id="process-title">Our Process</h2>
+        <p class="section-text">
+          Our collaborative approach ensures tailored solutions and impactful results through these key phases.
+        </p>
+      </div>
 
-        <div class="container section-title-container">
-             <h2 class="h2 section-title" id="process-title">Our Process</h2>
-             <p class="section-text">
-                 Our collaborative approach ensures tailored solutions and impactful results.
-             </p>
-        </div>
-    
-        <div class="container cards-container">
-            <ul id="cards">
-    
-              <li class="card" id="card1">
-                <div class="card-body">
-                    <div class="card-text-column">
-                        <span class="card-step-number" aria-hidden="true">01</span>
-                        <h3 class="h3 card-title">Kickoff Meeting</h3>
-                        <p class="card-text">
-                            We dive deep into your business, goals, audience, and competition through workshops and thorough research to understand the full picture.
-                        </p>
-                    </div>
-                    <div class="card-image-column">
-                        <img src="./assets/images/card-1.gif" alt="Discovery process illustration" loading="lazy">
-                    </div>
-                </div>
-            </li>
-    
-                <li class="card" id="card2">
-                    <div class="card-body">
-                       <div class="card-text-column">
-                            <span class="card-step-number" aria-hidden="true">02</span>
-                            <h3 class="h3 card-title">Strategy & Planning</h3>
-                            <p class="card-text">
-                                Based on insights, we craft a tailored digital strategy and project roadmap, defining clear objectives, milestones, and KPIs for success.
-                              </p>
-                            </div>
-                            <div class="card-image-column">
-                                <img src="./assets/images/process-placeholder-1.png" alt="Discovery process illustration" loading="lazy">
-                            </div>
-                        </div>
-                    </li>
-                    
-    
-                <li class="card" id="card3">
-                    <div class="card-body">
-                        <div class="card-content-inner">
-                            <span class="card-step-number" aria-hidden="true">03</span>
-                            <h3 class="h3 card-title">Design & Development</h3>
-                            <p class="card-text">
-                                Our team designs intuitive interfaces and develops robust solutions, focusing on user experience, performance, and scalability using modern tech.
-                            </p>
-                            </div>
-                    </div>
-                </li>
-    
-                <li class="card" id="card4">
-                     <div class="card-body">
-                        <div class="card-content-inner">
-                            <span class="card-step-number" aria-hidden="true">04</span>
-                            <h3 class="h3 card-title">Launch & Growth</h3>
-                            <p class="card-text">
-                                We manage a smooth deployment and provide ongoing support, analytics insights, and optimization strategies to ensure continued growth and success.
-                            </p>
-                            </div>
-                    </div>
-                </li>
-    
-            </ul>
-        </div>
-    </section>
+      <div class="container cards-container">
+        <ul id="cards">
+
+          <li class="card" id="card1">
+            <div class="card-body">
+              <div class="card-text-column">
+                <span class="card-step-number" aria-hidden="true">01</span>
+                <h3 class="card-title">Discovery & Kickoff</h3>
+                <p class="card-text">
+                  We dive deep into your business, goals, audience, and competition through workshops and thorough research to understand the full picture.
+                </p>
+              </div>
+              <div class="card-image-column">
+                <img src="./assets/images/card-1.gif" alt="Animated illustration of team members collaborating during discovery phase." loading="lazy">
+              </div>
+            </div>
+          </li>
+
+          <li class="card" id="card2">
+            <div class="card-body">
+              <div class="card-text-column">
+                <span class="card-step-number" aria-hidden="true">02</span>
+                <h3 class="card-title">Strategy & Planning</h3>
+                <p class="card-text">
+                  Based on insights, we craft a tailored digital strategy and project roadmap, defining clear objectives, milestones, and KPIs for success.
+                </p>
+              </div>
+              <div class="card-image-column">
+                <img src="./assets/images/card-2.png" alt="Illustration representing strategic planning with charts and graphs." loading="lazy">
+              </div>
+            </div>
+          </li>
+
+          <li class="card" id="card3">
+            <div class="card-body">
+              <div class="card-text-column">
+                 <span class="card-step-number" aria-hidden="true">03</span>
+                 <h3 class="card-title">Design & Development</h3>
+                 <p class="card-text">
+                   Our team designs intuitive interfaces and develops robust solutions, focusing on user experience, performance, and scalability using modern tech.
+                 </p>
+              </div>
+              <div class="card-image-column">
+                  <img src="./assets/images/process-placeholder-2.png" alt="Illustration showing UI design mockups and coding." loading="lazy">
+              </div>
+            </div>
+          </li>
+
+          <li class="card" id="card4">
+             <div class="card-body">
+               <div class="card-text-column">
+                  <span class="card-step-number" aria-hidden="true">04</span>
+                  <h3 class="card-title">Launch & Growth</h3>
+                  <p class="card-text">
+                    We manage a smooth deployment and provide ongoing support, analytics insights, and optimization strategies to ensure continued growth and success.
+                  </p>
+               </div>
+               <div class="card-image-column">
+                   <img src="./assets/images/process-placeholder-3.png" alt="Illustration depicting project launch with rocket and growth metrics." loading="lazy">
+               </div>
+             </div>
+          </li>
+
+        </ul></div></section>
 
       <section class="section about" id="about" aria-labelledby="about-title">
         <div class="container">
@@ -295,45 +313,6 @@
         </div>
       </section>
 
-      <section class="section contact" id="contact" aria-labelledby="contact-title">
-        <div class="container">
-          <h2 class="h2 section-title" id="contact-title">Get In Touch</h2>
-          <p class="section-text">Have questions or ready to start a project? Fill out the form below or reach out via email or phone. We're here to help!</p>
-
-          <form action="https://formspree.io/f/xanepnyz" method="POST" class="contact-form">
-            <div class="input-wrapper">
-              <div>
-                   <label for="name" class="form-label">Your Name*</label>
-                   <input type="text" name="name" id="name" placeholder="Enter your full name" required class="input-field">
-               </div>
-               <div>
-                   <label for="email" class="form-label">Email Address*</label>
-                   <input type="email" name="email_address" id="email" placeholder="Enter your email address" required class="input-field">
-               </div>
-            </div>
-            <div class="input-wrapper">
-              <div>
-                   <label for="subject" class="form-label">Subject</label>
-                   <input type="text" name="subject" id="subject" placeholder="Enter the subject" class="input-field">
-               </div>
-               <div>
-                   <label for="phone" class="form-label">Phone Number (Optional)</label>
-                   <input type="tel" name="phone" id="phone" placeholder="Enter your phone number" class="input-field" pattern="[0-9\s\-()+]*">
-               </div>
-            </div>
-            <div>
-                 <label for="message" class="form-label">Your Message*</label>
-                 <textarea name="message" id="message" placeholder="Enter your message here..." required class="input-field"></textarea>
-             </div>
-            <div class="checkbox-wrapper">
-              <input type="checkbox" name="terms_and_policy" id="terms" required class="checkbox">
-              <label for="terms" class="label">
-                   I accept the <a href="#" class="label-link" target="_blank">Privacy Policy</a> and <a href="#" class="label-link" target="_blank">Terms of Service</a>*
-               </label>
-            </div>
-            <button type="submit" class="btn btn-primary">Send Message</button>
-          </form>
-
           <ul class="contact-list">
             <li class="contact-item">
               <div class="contact-card">
@@ -341,7 +320,7 @@
                 <div class="card-content">
                   <h3 class="h3 card-title">Email Us</h3>
                   <a href="mailto:info@electrixel.co.za" class="card-link">info@electrixel.co.za</a>
-                  <a href="mailto:support@electrixel.co.za" class="card-link">support@electrixel.co.za</a>
+                  <a href="mailto:support@electrixel.co.za" class="card-link"></a>
                 </div>
               </div>
             </li>
@@ -350,7 +329,7 @@
                 <div class="card-icon"><ion-icon name="map-outline" aria-hidden="true"></ion-icon></div>
                 <div class="card-content">
                   <h3 class="h3 card-title">Visit Us</h3>
-                  <address class="card-address">123 Digital Avenue,<br>Innovation City, Gauteng, 12345<br>South Africa (By Appointment Only)</address>
+                  <address class="card-address">=<br><br></address>
                 </div>
               </div>
             </li>
@@ -360,7 +339,7 @@
                 <div class="card-content">
                   <h3 class="h3 card-title">Call Us</h3>
                   <a href="tel:+27608868940" class="card-link">+27 60 886 8940</a>
-                  <a href="tel:+27112345678" class="card-link">+27 11 234 5678</a>
+                  <a href="tel:+27112345678" class="card-link"></a>
                 </div>
               </div>
             </li>

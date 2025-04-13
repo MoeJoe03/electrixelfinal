@@ -497,17 +497,210 @@ main > article > section.in-view {
   #HERO SECTION
 \*-----------------------------------*/
 
-.hero { padding-block-start: calc(var(--header-height) + 40px); padding-block-end: var(--section-padding); text-align: center; }
-.hero .container { display: flex; flex-direction: column; align-items: center; gap: 40px; }
-.hero-content { max-width: 600px; width: 100%; }
-.hero-subtitle { color: var(--eerie-black); font-size: var(--fs-5); font-weight: var(--fw-500); }
-.hero-title { margin-block: 12px 15px; }
-.hero-text { font-size: var(--fs-5); margin-bottom: 25px; }
-.hero .btn { margin-inline: auto; }
-.hero-media-container { position: relative; width: 100%; max-width: 450px; margin-inline: auto; aspect-ratio: 9 / 16; overflow: hidden; border-radius: var(--radius-8); background-color: var(--black); }
-.hero-video, .hero-media-container .img-cover { width: 100%; height: 100%; object-fit: contain; object-position: center; }
-.hero-media-container .img-cover { display: none; }
-.video-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, transparent 70%); z-index: 1; pointer-events: none; }
+.hero {
+  padding-block-start: 0; /* Remove top padding */
+  padding-block-end: 0; /* Remove bottom padding */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; /* Ensure proper stacking context */
+  opacity: 0; /* Hide hero section until ready */
+  transition: opacity 0.3s ease; /* Smooth fade-in */
+}
+
+/* Show hero section once preloader is done */
+body.loaded .hero {
+  opacity: 1; /* Fade in hero section */
+}
+
+/* Video Container */
+.hero-video-container {
+  width: 100%;
+  height: 100vh; /* Full viewport height for desktop */
+  position: absolute; /* Position at the top of the viewport */
+  top: 0; /* Align to the top */
+  left: 0;
+  overflow: hidden;
+  z-index: 1; /* Below the header (header has z-index: 1000) */
+  background-color: var(--black); /* Fallback background in case video fails */
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure video covers the area without distortion on desktop */
+  object-position: center;
+  display: block; /* Ensure the video element is rendered properly */
+}
+
+/* Fallback image: Hidden by default, shown only on video error */
+.hero-video + .img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: none; /* Hidden unless video fails */
+}
+
+/* Text Section */
+.hero-content-section {
+  background-color: var(--white-1); /* Match your site’s background */
+  width: 100%;
+  padding-block: var(--section-padding); /* Use your standard section padding */
+  text-align: center;
+  margin-top: 100vh; /* Ensure text starts below the video on desktop */
+  position: relative;
+  z-index: 2; /* Above the video container */
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-subtitle {
+  color: var(--eerie-black);
+  font-size: var(--fs-5);
+  font-weight: var(--fw-500);
+  margin-bottom: 12px;
+}
+
+.hero-title {
+  color: var(--eerie-black);
+  margin-block: 12px 15px;
+}
+
+.hero-text {
+  font-size: var(--fs-5);
+  margin-bottom: 25px;
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-content .btn {
+  margin-inline: auto;
+  background-image: var(--gradient);
+  color: var(--white-1);
+}
+
+.hero-content .btn:is(:hover, :focus-visible) {
+  background-position: right center;
+}
+
+/* Responsive Adjustments for Desktop and Tablet */
+@media (min-width: 768px) {
+  .hero-subtitle {
+    font-size: var(--fs-4);
+  }
+  
+  .hero-title {
+    font-size: var(--fs-1);
+  }
+  
+  .hero-text {
+    font-size: var(--fs-4);
+  }
+
+  .hero-content {
+    max-width: 900px;
+  }
+}
+
+/* Mobile Adjustments (≤ 767px) */
+@media (max-width: 767px) {
+  .hero-video-container {
+    width: 100%; /* Take full width of the screen */
+    height: auto; /* Allow height to adjust based on aspect ratio */
+    padding-top: calc(56.25% + var(--header-height)); /* 1080/1920 = 0.5625 (16:9 aspect ratio) + header height */
+    position: relative; /* Change to relative to avoid overlap issues */
+    top: 0; /* No offset needed since we're using padding */
+    left: 0;
+    background-color: var(--black); /* Fallback background */
+  }
+
+  .hero-video {
+    position: absolute;
+    top: var(--header-height); /* Start below the header */
+    left: 0;
+    width: 100%;
+    height: calc(100% - var(--header-height)); /* Adjust height to account for header */
+    object-fit: contain; /* Show the entire video without cropping */
+    object-position: center top; /* Align video to the top */
+    display: block; /* Ensure the video renders */
+  }
+
+  .hero-video + .img-cover {
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    width: 100%;
+    height: calc(100% - var(--header-height));
+    object-fit: contain;
+    object-position: center top;
+    display: none; /* Hidden unless video fails */
+  }
+
+  .hero-content-section {
+    padding-block: 40px; /* Reduce padding for mobile */
+    margin-top: 0; /* No additional margin since the container is now relative */
+  }
+
+  .hero-subtitle {
+    font-size: var(--fs-6);
+  }
+
+  .hero-title {
+    font-size: var(--fs-2);
+  }
+
+  .hero-text {
+    font-size: var(--fs-6);
+  }
+
+  .hero-content {
+    max-width: 100%; /* Ensure text fits within container on mobile */
+    padding-inline: 15px;
+  }
+}
+
+/* Play Button Overlay */
+.play-video-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  color: var(--white-1);
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10; /* Above the video */
+  transition: opacity 0.3s ease;
+}
+
+.play-video-btn ion-icon {
+  font-size: 24px;
+}
+
+.play-video-btn:hover,
+.play-video-btn:focus {
+  background-color: rgba(0, 0, 0, 0.9);
+  outline: none;
+}
+
+/* Ensure the button is hidden by default */
+.play-video-btn[hidden] {
+  display: none;
+}
+
+/* ... Rest of the existing styles remain unchanged ... */
 
 /* ================================================== */
 /* CSS for Service Section - Horizontal Scroll Effect */
@@ -1152,8 +1345,6 @@ select.input-field option { color: var(--eerie-black); background-color: var(--w
   .navbar-link::after { content: ""; position: absolute; bottom: 10px; left: 0; width: 100%; height: 2px; background-image: var(--gradient); transform: scaleX(0); transform-origin: left; transition: transform var(--transition-2); }
   .navbar-link:is(:hover, :focus-visible, .active)::after { transform: scaleX(1); }
   .mobile-socials { display: none; }
-  .hero-subtitle { position: relative; padding-inline-start: 15px; }
-  .hero-subtitle::before { display: block; content: ""; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background-color: var(--red-crayola); }
   .service-card { padding: 30px; }
   .service-card .h3 { --fs-3: 2.3rem; }
   .about .container { grid-template-columns: 1fr 1fr; gap: 50px; }
