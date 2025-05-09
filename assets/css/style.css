@@ -2259,39 +2259,39 @@ select.input-field option { color: var(--eerie-black); background-color: var(--w
 }
 
 .social-links li:hover:nth-child(1) a {
-  background: #3b5998;
+  background: linear-gradient(90deg,rgba(249, 206, 52, 1) 0%, rgba(238, 42, 123, 1) 50%, rgba(98, 40, 215, 1) 100%);
 }
 
 .social-links li:hover:nth-child(1) a:before {
-  background: #365492;
+  background: #F9CE34;
 }
 
 .social-links li:hover:nth-child(1) a:after {
-  background: #4a69ad;
+  background: linear-gradient(90deg,rgba(249, 206, 52, 1) 0%, rgba(238, 42, 123, 1) 50%, rgba(98, 40, 215, 1) 100%);
 }
 
 .social-links li:hover:nth-child(2) a {
-  background: #00aced;
+  background: #1877F2;
 }
 
 .social-links li:hover:nth-child(2) a:before {
-  background: #097aa5;
+  background: #1877F2;
 }
 
 .social-links li:hover:nth-child(2) a:after {
-  background: #53b9e0;
+  background: #1877F2;
 }
 
 .social-links li:hover:nth-child(3) a {
-  background: #dd4b39;
+  background: #0077B5;
 }
 
 .social-links li:hover:nth-child(3) a:before {
-  background: #b33a2b;
+  background: #0077B5;
 }
 
 .social-links li:hover:nth-child(3) a:after {
-  background: #e66a5a;
+  background: #0077B5;
 }
 
 .social-links li:hover:nth-child(4) a {
