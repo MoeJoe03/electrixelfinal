@@ -74,54 +74,49 @@
             <div class="input-wrapper">
               <label for="name" class="sr-only">Your Name</label>
               <input type="text" name="name" id="name" placeholder="Your Name*" required class="input-field">
-
+          
               <label for="email" class="sr-only">Email Address</label>
-              <input type="email" name="email" id="email" placeholder="Email Address*" required class="input-field">
+              <input type="email" name="email" id="email" placeholder="Work Email Address*" required class="input-field">
             </div>
-             <div class="input-wrapper">
-                <label for="company" class="sr-only">Company Name</label>
-                <input type="text" name="company" id="company" placeholder="Company Name (Optional)" class="input-field">
-
-                <label for="phone" class="sr-only">Phone Number</label>
-                <input type="tel" name="phone" id="phone" placeholder="Phone Number (Optional)" class="input-field" pattern="[0-9\s\-()+]*">
-            </div>
-
-            <h2 class="h3 form-subtitle">Project Details</h2>
-             <div class="input-wrapper checkbox-group-wrapper">
-                 <label class="form-label">Services Interested In*:</label>
-                 <div class="checkbox-group">
-                    <div class="checkbox-item"><input type="checkbox" id="service-seo" name="service_needed[]" value="SEO"><label for="service-seo">SEO Optimization</label></div>
-                    <div class="checkbox-item"><input type="checkbox" id="service-marketing" name="service_needed[]" value="Digital Marketing"><label for="service-marketing">Digital Marketing</label></div>
-                    <div class="checkbox-item"><input type="checkbox" id="service-design" name="service_needed[]" value="Web Design"><label for="service-design">Web Design/Development</label></div>
-                    <div class="checkbox-item"><input type="checkbox" id="service-research" name="service_needed[]" value="Market Research"><label for="service-research">Market Research</label></div>
-                    <div class="checkbox-item"><input type="checkbox" id="service-other" name="service_needed[]" value="Other"><label for="service-other">Other (Please specify below)</label></div>
-                 </div>
-             </div>
-
             <div class="input-wrapper">
-                 <label for="budget" class="form-label">Estimated Budget (Optional):</label>
-                 <select name="budget" id="budget" class="input-field">
-                     <option value="" disabled selected>Select Budget Range</option>
-                     <option value="<1500">&lt; R 1,500</option>
-                     <option value="5000-15000">R 5,000 - R 15,000</option>
-                     <option value="15000-30000">R 15,000 - R 30,000</option>
-                     <option value="30000-50000">R 30,000 - R 50,000</option>
-                     <option value="50000+">R 50,000+</option>
-                     <option value="Unsure">Unsure</option>
-                 </select>
+              <label for="company" class="sr-only">Company Name</label>
+              <input type="text" name="company" id="company" placeholder="Company Name (Optional)" class="input-field">
+          
+              <label for="phone" class="sr-only">Phone Number</label>
+              <input type="tel" name="phone" id="phone" placeholder="Phone Number (Optional)" class="input-field" pattern="[0-9\s\-()+]*">
             </div>
-
+          
+            <h2 class="h3 form-subtitle">Project Details</h2>
+            <div class="input-wrapper checkbox-group-wrapper">
+              <label class="form-label">Services Interested In*:</label>
+              <div class="checkbox-group">
+                <div class="checkbox-item"><input type="checkbox" id="service-seo" name="service_needed[]" value="SEO"><label for="service-seo">SEO Optimization</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="service-marketing" name="service_needed[]" value="Digital Marketing"><label for="service-marketing">Digital Marketing</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="service-design" name="service_needed[]" value="Web Design"><label for="service-design">Web Design/Development</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="service-research" name="service_needed[]" value="Market Research"><label for="service-research">Market Research</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="service-other" name="service_needed[]" value="Other"><label for="service-other">Other (Please specify below)</label></div>
+              </div>
+            </div>
+          
+            <div class="input-wrapper">
+              <label for="budget" class="form-label">Estimated Budget (Optional):</label>
+              <select name="budget" id="budget" class="input-field">
+                <option value="" disabled selected>Select Budget Range</option>
+                <option value="<5000">< R 5,000</option>
+                <option value="5000-15000">R 5,000 - R 15,000</option>
+                <option value="15000-30000">R 15,000 - R 30,000</option>
+                <option value="30000-50000">R 30,000 - R 50,000</option>
+                <option value="50000+">R 50,000+</option>
+                <option value="Unsure">Unsure</option>
+              </select>
+            </div>
+          
             <label for="project-description" class="sr-only">Project Description</label>
             <textarea name="project_description" id="project-description" placeholder="Briefly describe your project, goals, and timeline...*" required class="input-field" rows="6"></textarea>
-
-            <div class="checkbox-wrapper">
-              <input type="checkbox" name="terms_and_policy" id="terms" required class="checkbox">
-              <label for="terms" class="label">
-                I accept the <a href="#" class="label-link" target="_blank">Privacy Policy</a> and <a href="#" class="label-link" target="_blank">Terms of Service</a>*
-              </label>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Submit Quote Request</button>
+          
+            <!-- Removed the checkbox-wrapper div here -->
+          
+            <button type="submit" class="btn">Submit Quote Request</button>
           </form>
 
           <div class="quote-process-info" style="margin-top: 40px; text-align: center; font-size: var(--fs-6);">

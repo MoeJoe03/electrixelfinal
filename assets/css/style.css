@@ -808,7 +808,7 @@ body.nav-active {
 .quote-form .input-field {
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid var(--eerie-black-20);
+  border: 1px solid var(--persian-rose);
   border-radius: var(--radius-8);
   font-size: var(--fs-5);
   color: var(--eerie-black);
@@ -854,23 +854,21 @@ body.nav-active {
   color: var(--eerie-black);
 }
 
-.quote-form .checkbox-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.quote-form .label-link {
-  color: var(--safety-orange);
-  text-decoration: underline;
-}
-
 .quote-form .btn {
   width: 100%;
   padding: 12px;
   font-size: var(--fs-5);
-  margin-top: 20px;
+  margin-top: 40px;
+  background-color: var(--blue-gray); /* Or #ff7f00 as fallback */
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-8);
+  cursor: pointer;
+  transition: background-color var(--transition-1);
+}
+
+.quote-form .btn:hover {
+  background-color: #1B263B;; /* Darker shade */
 }
 
 .quote-process-info .h3 {
