@@ -725,25 +725,269 @@ const updateCopyrightYear = () => {
     }
 };
 
+/**
+ * Initializes the project popup functionality for the carousel.
+ */
+const initProjectPopup = () => {
+    const carousel = document.getElementById('carousel');
+    const popup = document.getElementById('project-popup');
+    const closeBtn = popup?.querySelector('.close-popup');
+    const prevBtn = popup?.querySelector('.popup-prev-btn');
+    const nextBtn = popup?.querySelector('.popup-next-btn');
+    const prevName = prevBtn?.querySelector('.project-name');
+    const nextName = nextBtn?.querySelector('.project-name');
+    const titleElement = popup?.querySelector('.popup-title');
+    const galleryElement = popup?.querySelector('.image-gallery');
+    const descriptionElement = popup?.querySelector('.popup-description');
+    const tagsElement = popup?.querySelector('.service-tags');
+    const fullscreenOverlay = document.getElementById('fullscreen-image');
+    const fullscreenImg = fullscreenOverlay?.querySelector('.fullscreen-img');
+    const fullscreenClose = fullscreenOverlay?.querySelector('.fullscreen-close');
+  
+    if (!carousel || !popup || !closeBtn || !prevBtn || !nextBtn || !prevName || !nextName || !titleElement || !galleryElement || !descriptionElement || !tagsElement || !fullscreenOverlay || !fullscreenImg || !fullscreenClose) {
+      console.warn('Project popup or fullscreen elements not found.');
+      return;
+    }
+  
+    // Prevent touch events on image gallery from bubbling to carousel
+    ['touchstart', 'touchmove', 'touchend'].forEach(eventType => {
+      galleryElement.addEventListener(eventType, (e) => {
+        e.stopPropagation();
+      });
+    });
+  
+    // Sample project data (replace with your actual project details)
+    const projects = [
+      {
+        title: 'Goldman Dutch',
+        images: [
+          './assets/images/dutchman-1.png',
+          './assets/images/dutchman-2.jpg',
+          './assets/images/dutchman-3.jpg',
+          './assets/images/dutchman-4.jpg',
+          './assets/images/dutchman-5.jpg'
+        ],
+        description: 'Developed a dynamic, fully responsive website for a premium coffee brand, combining seamless e-commerce functionality with secure payment integration, advanced product filtering, and user account features.',
+        tags: ['Branding','Web Development', 'SEO', 'UI/UX', 'Payment Integration']
+      },
+      {
+        title: 'Handyman',
+        images: [
+          './assets/images/handyman-1.png',
+          './assets/images/handyman-2.png',
+          './assets/images/handyman-3.png',
+          './assets/images/handyman-4.png'
+        ],
+        description: 'Developed a clean, responsive website concept for a handyman service, designed to highlight a wide range of repair and maintenance solutions. The site features intuitive navigation, clear service categories, and easy-to-use contact forms to streamline bookings. ',
+        tags: ['Concept', 'Web Development', 'UI/UX']
+      },
+      {
+        title: 'Logofolio',
+        images: [
+          './assets/images/Aqua_logo.png',
+          './assets/images/mm.png'
+        ],
+        description: 'A curated collection of logo designs showcasing versatile, impactful branding solutions across diverse industries',
+        tags: ['Logo Design', 'Branding']
+      },
+      {
+        title: 'Seatly',
+        images: [
+          './assets/images/seatly-1.png',
+          './assets/images/seatly-2.jpg',
+          './assets/images/seatly-3.jpg',
+          './assets/images/seatly-4.jpg',
+          './assets/images/seatly-5.jpg'
 
+        ],
+        description: 'Developed a sleek, modern website concept for, an interior design studio specialising in contemporary spaces.',
+        tags: ['Concept', 'Web Development', 'UI/UX']
+      },
+      {
+        title: 'Aqua Essence',
+        images: [
+          './assets/images/aqua-1.png',
+          './assets/images/Aqua_logo.png'
+        ],
+        description:'Created a distinctive logo and developed a professional, engaging flyer to promote the launch of the swim school, highlighting its mission, inclusive activities, and registration details. ',
+        tags: ['Branding', 'Logo Design', 'Marketing']
+      },
+      {
+        title: 'Sprinkles of Essence',
+        images: [
+          './assets/images/sprinkles-1.png'
+        ],
+        description:'Successfully designed a visually appealing advertisement for a kindergarten based baking initiative. The ad emphasizes affordability, safety, and inclusivity. ',
+        tags: ['Branding', 'Marketing' ]
+      }
+    ];
+  
+    let currentProjectIndex = 0; // Track the current project
+  
+    // Add click handlers to carousel items
+    const carouselItems = carousel.querySelectorAll('.item');
+    carouselItems.forEach((item, index) => {
+      item.setAttribute('role', 'button');
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('aria-label', `View details for ${projects[index].title}`);
+      item.addEventListener('click', () => openPopup(index));
+      // Allow keyboard activation
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openPopup(index);
+        }
+      });
+    });
+  
+    // Function to update button states and text
+    const updateButtonStates = () => {
+      // Update disabled states
+      prevBtn.disabled = currentProjectIndex === 0;
+      nextBtn.disabled = currentProjectIndex === projects.length - 1;
+      prevBtn.setAttribute('aria-disabled', prevBtn.disabled.toString());
+      nextBtn.setAttribute('aria-disabled', nextBtn.disabled.toString());
+  
+      // Update button text with project names
+      prevName.textContent = currentProjectIndex > 0 ? projects[currentProjectIndex - 1].title : '';
+      nextName.textContent = currentProjectIndex < projects.length - 1 ? projects[currentProjectIndex + 1].title : '';
+    };
+  
+    // Function to open full-screen image
+    const openFullscreenImage = (src, alt) => {
+      fullscreenImg.src = src;
+      fullscreenImg.alt = alt;
+      fullscreenOverlay.classList.add('active');
+      fullscreenOverlay.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('fullscreen-active');
+      fullscreenClose.focus(); // Focus close button
+    };
+  
+    // Function to close full-screen image
+    const closeFullscreenImage = () => {
+      fullscreenOverlay.classList.remove('active');
+      fullscreenOverlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('fullscreen-active');
+      // Focus back on the gallery
+      galleryElement.focus();
+    };
+  
+    // Event listeners for full-screen image
+    fullscreenClose.addEventListener('click', closeFullscreenImage);
+    fullscreenOverlay.addEventListener('click', (e) => {
+      if (e.target === fullscreenOverlay) closeFullscreenImage();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && fullscreenOverlay.classList.contains('active')) {
+        closeFullscreenImage();
+      }
+    });
+  
+    // Function to open and populate the popup
+    const openPopup = (index) => {
+      const project = projects[index];
+      if (!project) return;
+  
+      currentProjectIndex = index; // Update current index
+  
+      // Populate popup content
+      titleElement.textContent = project.title;
+      descriptionElement.textContent = project.description;
+  
+      // Clear and populate image gallery
+      galleryElement.innerHTML = '';
+      project.images.forEach((src, imgIndex) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `${project.title} screenshot ${imgIndex + 1}`;
+        img.className = 'popup-img';
+        img.loading = 'lazy';
+        img.tabIndex = 0; // Make image focusable
+        img.setAttribute('role', 'button');
+        img.setAttribute('aria-label', `View ${img.alt} in full screen`);
+        img.addEventListener('click', () => openFullscreenImage(src, img.alt));
+        img.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openFullscreenImage(src, img.alt);
+          }
+        });
+        galleryElement.appendChild(img);
+      });
+  
+      // Clear and populate tags
+      tagsElement.innerHTML = '';
+      project.tags.forEach(tag => {
+        const li = document.createElement('li');
+        li.textContent = tag;
+        tagsElement.appendChild(li);
+      });
+  
+      // Update button states and text
+      updateButtonStates();
+  
+      // Show popup
+      popup.classList.add('active');
+      popup.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('popup-active');
+      closeBtn.focus(); // Focus close button initially
+    };
+  
+    // Function to close the popup
+    const closePopup = () => {
+      popup.classList.remove('active');
+      popup.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('popup-active');
+      // Focus the corresponding carousel item
+      const currentItem = carousel.querySelector(`.item:nth-of-type(${currentProjectIndex + 1})`);
+      currentItem?.focus();
+    };
+  
+    // Event listeners for navigation buttons
+    prevBtn.addEventListener('click', () => {
+      if (currentProjectIndex > 0) {
+        openPopup(currentProjectIndex - 1);
+        prevBtn.focus(); // Keep focus on prev button
+      }
+    });
+  
+    nextBtn.addEventListener('click', () => {
+      if (currentProjectIndex < projects.length - 1) {
+        openPopup(currentProjectIndex + 1);
+        nextBtn.focus(); // Keep focus on next button
+      }
+    });
+  
+    // Event listeners for closing
+    closeBtn.addEventListener('click', closePopup);
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) closePopup(); // Close if clicking outside content
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && popup.classList.contains('active')) {
+        closePopup();
+      }
+    });
+  };
+  
+  
 /**
  * Main application initialization function - calls all specific init functions.
  */
 const initApp = () => {
-     initPreloader();
-     initMobileMenu();
-     initHeaderAndScrollTop();
-     highlightCurrentNavLink(); // Highlight link on initial load
-     // initProjectPopup(); // <-- Keep removed or commented out
-     initForms();
-     initVideos();
-     initScrollAnimations();
-     updateCopyrightYear();
-     initScrollHijackCarousel(); // <-- CORRECT: Call added here at the end
-
-     initServiceHorizontalScroll();
-     
- };
+    initPreloader();
+    initMobileMenu();
+    initHeaderAndScrollTop();
+    highlightCurrentNavLink(); // Highlight link on initial load
+    // initProjectPopup(); // <-- Keep removed or commented out
+    initForms();
+    initVideos();
+    initScrollAnimations();
+    updateCopyrightYear();
+    initScrollHijackCarousel(); // <-- CORRECT: Call added here at the end
+    initProjectPopup(); // Add this line
+    initServiceHorizontalScroll();
+};
  
  // --- Initialize the App ---
  // Run initialization after the DOM is fully loaded and parsed

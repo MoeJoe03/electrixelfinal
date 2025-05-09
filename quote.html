@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Request a Quote - Electrixel</title>
   <meta name="description" content="Get a personalized quote for your digital marketing, SEO, design, or development project from Electrixel. Tell us about your needs.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,12 +52,13 @@
            </li>
          </ul>
        </nav>
-       <button class="nav-toggle-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar" data-nav-toggler>
-         <ion-icon name="menu-outline" class="open" aria-hidden="true"></ion-icon>
-         <ion-icon name="close-outline" class="close" aria-hidden="true"></ion-icon>
-       </button>
-     </div>
-   </header>
+       <button class="nav-toggle-btn" data-nav-toggler aria-label="Toggle navigation menu">
+        <ion-icon class="menu-icon" name="menu-outline"></ion-icon>
+        <ion-icon class="close-icon" name="close-outline"></ion-icon>
+      </button>
+      <div class="mobile-menu-overlay" data-overlay></div>
+    </div>
+  </header>
 
   <main>
     <article>
@@ -74,7 +76,7 @@
               <input type="text" name="name" id="name" placeholder="Your Name*" required class="input-field">
 
               <label for="email" class="sr-only">Email Address</label>
-              <input type="email" name="email" id="email" placeholder="Work Email Address*" required class="input-field">
+              <input type="email" name="email" id="email" placeholder="Email Address*" required class="input-field">
             </div>
              <div class="input-wrapper">
                 <label for="company" class="sr-only">Company Name</label>
@@ -100,7 +102,7 @@
                  <label for="budget" class="form-label">Estimated Budget (Optional):</label>
                  <select name="budget" id="budget" class="input-field">
                      <option value="" disabled selected>Select Budget Range</option>
-                     <option value="<5000">&lt; R 5,000</option>
+                     <option value="<1500">&lt; R 1,500</option>
                      <option value="5000-15000">R 5,000 - R 15,000</option>
                      <option value="15000-30000">R 15,000 - R 30,000</option>
                      <option value="30000-50000">R 30,000 - R 50,000</option>

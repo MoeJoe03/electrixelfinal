@@ -2,11 +2,7 @@
 <html lang="en">
 <head>
 
-  <script>
-    // Redirect to Coming Soon page
-    window.location.href = 'coming-soon.html';
-  </script>
-
+  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -16,13 +12,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <link rel="preload" href="./assets/css/style.css" as="style">
   <link rel="preload" href="./assets/js/script.js" as="script">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Roboto:wght@400;500;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
   <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/style.css">
 
   <noscript>
@@ -53,21 +50,16 @@
           <li><a href="#project" class="navbar-link" data-nav-link>Projects</a></li>
           <li><a href="#process" class="navbar-link" data-nav-link>Process</a></li>
           <li><a href="#about" class="navbar-link" data-nav-link>About</a></li>
-          <li><a href="#contact" class="navbar-link" data-nav-link>Contact</a></li>
+          <li><a href="quote.html" class="navbar-link">| Start Project</a></li>
           <li class="mobile-socials">
-            <div class="social-links">
-              <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><ion-icon name="logo-instagram"></ion-icon></a>
-              <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><ion-icon name="logo-facebook"></ion-icon></a>
-              <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><ion-icon name="logo-linkedin"></ion-icon></a>
-            </div>
           </li>
         </ul>
       </nav>
-
-      <button class="nav-toggle-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar" data-nav-toggler>
-        <ion-icon name="menu-outline" class="open" aria-hidden="true"></ion-icon>
-        <ion-icon name="close-outline" class="close" aria-hidden="true"></ion-icon>
+      <button class="nav-toggle-btn" data-nav-toggler aria-label="Toggle navigation menu">
+        <ion-icon class="menu-icon" name="menu-outline"></ion-icon>
+        <ion-icon class="close-icon" name="close-outline"></ion-icon>
       </button>
+      <div class="mobile-menu-overlay" data-overlay></div>
     </div>
   </header>
 
@@ -77,105 +69,140 @@
       <section class="section hero" id="home" aria-labelledby="hero-title">
         <!-- Video Section -->
         <div class="hero-video-container">
-          <video muted loop playsinline class="hero-video"
+          <!-- Desktop Video -->
+          <video muted loop playsinline autoplay class="hero-video hero-video-desktop"
                  aria-hidden="true" disablepictureinpicture
                  poster="./assets/images/hero-poster-new.jpg"
                  preload="auto">
-            <source src="./assets/videos/main_3.mp4" type="video/mp4">
-            <source src="./assets/videos/main.webm" type="video/webm">
+            <source src="./assets/videos/Main_Temp_1.mp4" type="video/mp4">
+            <source src="./assets/videos/desktop-hero-video.webm" type="video/webm">
             <img src="./assets/images/hero-fallback-new.jpg" alt="Abstract digital background animation"
                  class="img-cover" width="1920" height="1080">
             <p>Your browser does not support the video tag, or the video failed to load.</p>
           </video>
-          <!-- Play Button Overlay (shown only if video fails to play) -->
+          <!-- Mobile Video -->
+          <video muted loop playsinline autoplay class="hero-video hero-video-mobile"
+                 aria-hidden="true" disablepictureinpicture
+                 poster="./assets/images/hero-poster-new.jpg"
+                 preload="auto">
+            <source src="./assets/videos/Mobile-Temp_4.mp4" type="video/mp4">
+            <source src="./assets/videos/mobile-hero-video.webm" type="video/webm">
+            <img src="./assets/images/hero-fallback-new.jpg" alt="Abstract digital background animation"
+                 class="img-cover" width="1080" height="1080">
+            <p>Your browser does not support the video tag, or the video failed to load.</p>
+          </video>
+          <!-- Play Button Overlay -->
           <button class="play-video-btn" aria-label="Play video" style="display: none;">
             <ion-icon name="play"></ion-icon>
           </button>
-        </div>
-      
-        <!-- Text Section -->
-        <div class="hero-content-section">
-          <div class="container">
-            <div class="hero-content">
-              <p class="hero-subtitle">Electrixel Digital Solutions</p>
-              <h1 class="h1 hero-title" id="hero-title">Let's Transform Your Brand</h1>
-              <p class="hero-text">
-                Partner with us to elevate your online presence through data-driven strategies and creative digital experiences.
-              </p>
-              <a href="#contact" class="btn btn-primary">Get Started Today</a>
-            </div>
-          </div>
+          <!-- CTA Button Overlay -->
+          <a href="#contact" class="btn btn-primary hero-cta-btn">
+            Get Started Now
+            <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+          </a>
         </div>
       </section>
 
       <section class="section service" id="service" aria-labelledby="service-title">
-
-        <div class="container section-title-container" style="margin-bottom: 0; padding-bottom: 40px;"> <h2 class="h2 section-title" id="service-title">Services We Provide</h2>
-             <p class="section-text">
-                 Driving growth through a comprehensive suite of digital services tailored to your unique business needs and objectives.
-             </p>
+        <div class="container">
+          <h1 class="h1 section-title" id="service-title">Our Services</h1>
+          <div class="services-wrapper">
+            <div class="service-container" id="sv0" role="button" tabindex="0" aria-label="Learn more about Web Development">
+              <div class="service-image" id="si0">
+                <div class="service-icon">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <title>3D monitor icon for Web Development</title>
+                    <defs>
+                      <linearGradient id="monitorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#778DA9;stop-opacity:1"/>
+                        <stop offset="100%" style="stop-color:#415A77;stop-opacity:1"/>
+                      </linearGradient>
+                      <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="1" dy="1" stdDeviation="1" flood-opacity="0.3"/>
+                      </filter>
+                    </defs>
+                    <rect x="4" y="4" width="16" height="12" rx="2" fill="url(#monitorGrad)" filter="url(#shadow)"/>
+                    <path d="M8 6 L6 12 L8 18 M16 6 L18 12 L16 18" stroke="#E0E1DD" stroke-width="1.5" fill="none"/>
+                    <rect x="10" y="16" width="4" height="2" fill="#1B263B"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="service-info" id="ss0">
+                <div class="service-details">
+                  <h3>Web Development</h3>
+                  <p>Custom websites built with modern technologies. From responsive design to full-stack applications, we create digital experiences that engage and convert.</p>
+                </div>
+              </div>
+            </div>
+            <div class="service-container" id="sv1" role="button" tabindex="0" aria-label="Learn more about SEO">
+              <div class="service-image" id="si1">
+                <div class="service-icon">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <title>3D magnifying glass icon for SEO</title>
+                    <defs>
+                      <radialGradient id="lensGrad" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" style="stop-color:#778DA9;stop-opacity:1"/>
+                        <stop offset="100%" style="stop-color:#415A77;stop-opacity:1"/>
+                      </radialGradient>
+                      <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="1" dy="1" stdDeviation="1" flood-opacity="0.3"/>
+                      </filter>
+                    </defs>
+                    <circle cx="11" cy="11" r="6" fill="url(#lensGrad)" filter="url(#shadow)"/>
+                    <path d="M15 15 L21 21" stroke="#1B263B" stroke-width="2" filter="url(#shadow)"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="service-info" id="ss1">
+                <div class="service-details">
+                  <h3>SEO</h3>
+                  <p>Search Engine Optimization strategies to improve your visibility. We analyze, optimize, and monitor to ensure your site ranks for the right keywords.</p>
+                </div>
+              </div>
+            </div>
+            <div class="service-container" id="sv2" role="button" tabindex="0" aria-label="Learn more about Marketing">
+              <div class="service-image" id="si2">
+                <div class="service-icon">
+                  <img src="assets\images\megaphone-svgrepo-com (2).svg" alt="My icon" width="200">
+                </div>
+              </div>
+              <div class="service-info" id="ss2">
+                <div class="service-details">
+                  <h3>Marketing</h3>
+                  <p>Data-driven marketing campaigns that deliver results. Our multi-channel approach combines creativity with analytics to maximize your ROI.</p>
+                </div>
+              </div>
+            </div>
+            <div class="service-container" id="sv3" role="button" tabindex="0" aria-label="Learn more about Brand Refresh">
+              <div class="service-image" id="si3">
+                <div class="service-icon">
+                  <img src="assets/images/palette-svgrepo-com.svg" alt="Paint palette icon for Brand Refresh">
+                </div>
+              </div>
+              <div class="service-info" id="ss3">
+                <div class="service-details">
+                  <h3>Brand Refresh</h3>
+                  <p>Modernize your brand identity while maintaining its essence. We analyze market position and create visual systems that resonate with your audience.</p>
+                </div>
+              </div>
+            </div>
+            <div class="service-page">
+              <h4>Hover</h4>
+              <ul>
+                <li>  </li>
+                <li>  </li>
+              </ul>
+            </div>
+          </div>
         </div>
-    
-        <div class="horizontal-scroll-wrapper">
-            <div class="sticky-container">
-                <div class="service-track">
-    
-                    <div class="service-slide">
-                        <div class="service-slide-content">
-                           <div class="card-icon" style="background-color: #13c4a1"><ion-icon name="search-outline" aria-hidden="true"></ion-icon></div>
-                           <h3 class="h3 slide-title">SEO Optimization</h3>
-                           <p class="slide-text">Increase your visibility and rank higher in search results with our expert SEO strategies and implementation.</p>
-                        </div>
-                    </div>
-    
-                    <div class="service-slide">
-                         <div class="service-slide-content">
-                            <div class="card-icon" style="background-color: #6610f2"><ion-icon name="megaphone-outline" aria-hidden="true"></ion-icon></div>
-                            <h3 class="h3 slide-title">Digital Marketing</h3>
-                            <p class="slide-text">Engage your target audience across multiple channels with effective paid advertising and content marketing campaigns.</p>
-                         </div>
-                    </div>
-    
-                    <div class="service-slide">
-                         <div class="service-slide-content">
-                            <div class="card-icon" style="background-color: #ffb700"><ion-icon name="analytics-outline" aria-hidden="true"></ion-icon></div>
-                            <h3 class="h3 slide-title">Market Research</h3>
-                            <p class="slide-text">Gain valuable insights into your market landscape, competitors, and customer behavior to inform your strategy.</p>
-                         </div>
-                    </div>
-    
-                    <div class="service-slide">
-                         <div class="service-slide-content">
-                             <div class="card-icon" style="background-color: #fd475a"><ion-icon name="key-outline" aria-hidden="true"></ion-icon></div>
-                             <h3 class="h3 slide-title">Keyword Targeting</h3>
-                             <p class="slide-text">Identify and target high-value keywords to attract relevant traffic and improve campaign performance.</p>
-                         </div>
-                    </div>
-    
-                    <div class="service-slide">
-                         <div class="service-slide-content">
-                             <div class="card-icon" style="background-color: #00d280"><ion-icon name="mail-outline" aria-hidden="true"></ion-icon></div>
-                             <h3 class="h3 slide-title">Email Marketing</h3>
-                             <p class="slide-text">Nurture leads and build customer loyalty with personalized and automated email marketing campaigns.</p>
-                         </div>
-                    </div>
-    
-                    <div class="service-slide">
-                         <div class="service-slide-content">
-                             <div class="card-icon" style="background-color: #ff612f"><ion-icon name="stats-chart-outline" aria-hidden="true"></ion-icon></div>
-                             <h3 class="h3 slide-title">Marketing & Reporting</h3>
-                             <p class="slide-text">Track performance, measure ROI, and receive detailed reports to continuously optimize your marketing efforts.</p>
-                         </div>
-                    </div>
-    
-                </div> </div> </div> </section>
+      </section>
 
       <section class="section project" id="project" aria-labelledby="project-title">
 
         <div class="container section-title-container">
              <h2 class="h2 section-title" id="project-title">Our Recent Projects</h2>
              <p class="section-text">
-                 Explore some examples of our work.
+                 Explore the projects where we played, experimented, and built something amazing.
              </p>
         </div>    
     
@@ -191,6 +218,40 @@
               <ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon>
           </button>
           </div> ```
+
+  <!-- Popup HTML (within #carousel-container or similar) -->
+  <div class="popup-overlay" id="project-popup" role="dialog" aria-labelledby="popup-title" aria-hidden="true">
+    <div class="popup-content">
+      <button class="close-popup" aria-label="Close project details">×</button>
+      <h3 id="popup-title" class="popup-title"></h3>
+      <div class="image-gallery">
+        <!-- Images will be dynamically inserted here -->
+      </div>
+      <p class="popup-description"></p>
+      <div class="services">
+        <h4>Services</h4>
+        <ul class="service-tags">
+          <!-- Tags will be dynamically inserted here -->
+        </ul>
+      </div>
+      <div class="popup-nav">
+        <button class="popup-prev-btn" aria-label="View previous project" disabled>
+          <ion-icon name="chevron-back-outline" aria-hidden="true"></ion-icon>
+          <span class="project-name"></span>
+        </button>
+        <button class="popup-next-btn" aria-label="View next project">
+          <ion-icon name="chevron-forward-outline" aria-hidden="true"></ion-icon>
+          <span class="project-name"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full-screen image overlay -->
+  <div class="fullscreen-image-overlay" id="fullscreen-image" role="dialog" aria-hidden="true">
+    <button class="fullscreen-close" aria-label="Close full-screen image">×</button>
+    <img class="fullscreen-img" src="" alt="" />
+  </div>
     
     
     </section>
@@ -231,7 +292,7 @@
                 </p>
               </div>
               <div class="card-image-column">
-                <img src="./assets/images/card-2.png" alt="Illustration representing strategic planning with charts and graphs." loading="lazy">
+                <img src="assets\images\card-2.gif" alt="Illustration representing strategic planning with charts and graphs." loading="lazy">
               </div>
             </div>
           </li>
@@ -246,7 +307,7 @@
                  </p>
               </div>
               <div class="card-image-column">
-                  <img src="./assets/images/process-placeholder-2.png" alt="Illustration showing UI design mockups and coding." loading="lazy">
+                  <img src="assets\images\card-3.gif" alt="Illustration showing UI design mockups and coding." loading="lazy">
               </div>
             </div>
           </li>
@@ -261,38 +322,41 @@
                   </p>
                </div>
                <div class="card-image-column">
-                   <img src="./assets/images/process-placeholder-3.png" alt="Illustration depicting project launch with rocket and growth metrics." loading="lazy">
+                   <img src="assets\images\card-4.gif" alt="Illustration depicting project launch with rocket and growth metrics." loading="lazy">
                </div>
              </div>
           </li>
 
         </ul></div></section>
 
-      <section class="section about" id="about" aria-labelledby="about-title">
-        <div class="container">
-          <div class="about-banner video-container">
-            <video muted loop playsinline class="img-cover" width="720" height="960" loading="lazy" poster="./assets/images/about-banner.jpg">
-                   <source src="./assets/videos/about-video.mp4" type="video/mp4">
-                   <img src="./assets/images/about-banner.jpg" alt="Diverse team working collaboratively in an office environment" class="img-cover">
-            </video>
-            <button class="play-btn" aria-label="Play video"><ion-icon name="play" aria-hidden="true"></ion-icon></button>
+        <section class="section about" id="about" aria-labelledby="about-title">
+          <div class="container">
+            <div class="about-banner cube-container">
+              <div class="cube-card">
+                <div class="face front">About Us</div>
+                <div class="face back">About Us</div>
+                <div class="face right">About Ust</div>
+                <div class="face left">About Us</div>
+                <div class="face top">About Us</div>
+                <div class="face bottom">About Us</div>
+              </div>
+            </div>
+            <div class="about-content">
+              <h2 class="h2 section-title" id="about-title">About Electrixel</h2>
+              <p class="section-text">We are a passionate team of digital experts dedicated to helping businesses thrive in the online world through creativity and technology.</p>
+              <h3 class="h3">Who We Are</h3>
+              <p class="section-text">Founded on the principle of innovation, Electrixel brings together strategists, designers, developers, and marketers committed to delivering impactful results and building lasting partnerships.</p>
+              <h3 class="h3">Our Success Metrics</h3>
+              <ul class="about-list">
+                <li class="about-item"><ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon><p class="section-text">Proven track record of increasing client ROI through targeted digital campaigns.</p></li>
+                <li class="about-item"><ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon><p class="section-text">Expertise in leveraging data analytics for continuous performance improvement.</p></li>
+                <li class="about-item"><ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon><p class="section-text">Commitment to transparent communication and collaborative project management.</p></li>
+              </ul>
+              <h3 class="h3">Our Mission</h3>
+              <p class="section-text">To empower businesses by crafting exceptional digital solutions that drive growth, enhance brand presence, and create meaningful connections with their audiences.</p>
+            </div>
           </div>
-          <div class="about-content">
-            <h2 class="h2 section-title" id="about-title">About Electrixel</h2>
-            <p class="section-text">We are a passionate team of digital experts dedicated to helping businesses thrive in the online world through creativity and technology.</p>
-            <h3 class="h3">Who We Are</h3>
-            <p class="section-text">Founded on the principle of innovation, Electrixel brings together strategists, designers, developers, and marketers committed to delivering impactful results and building lasting partnerships.</p>
-            <h3 class="h3">Our Success Metrics</h3>
-            <ul class="about-list">
-              <li class="about-item"><ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon><p class="section-text">Proven track record of increasing client ROI through targeted digital campaigns.</p></li>
-              <li class="about-item"><ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon><p class="section-text">Expertise in leveraging data analytics for continuous performance improvement.</p></li>
-              <li class="about-item"><ion-icon name="checkmark-circle-outline" aria-hidden="true"></ion-icon><p class="section-text">Commitment to transparent communication and collaborative project management.</p></li>
-            </ul>
-            <h3 class="h3">Our Mission</h3>
-            <p class="section-text">To empower businesses by crafting exceptional digital solutions that drive growth, enhance brand presence, and create meaningful connections with their audiences.</p>
-          </div>
-        </div>
-      </section>
+        </section>
 
       <section class="section cta-connect" id="cta-connect" aria-labelledby="cta-connect-title">
         <div class="container cta-connect-container">
@@ -300,63 +364,53 @@
             <h2 class="h2 cta-connect-heading" id="cta-connect-title">Need a custom design or branding solution?</h2>
             <p class="cta-connect-point">Not getting the results you're looking for?</p>
             <p class="cta-connect-point">Feeling lost on where to start?</p>
-            <p class="cta-connect-point">Unable to find a person to design or develop a proper solution according to your brand's vision?</p>
-            <a href="#contact" class="cta-connect-link">Connect with me &gt;</a>
+            <p class="cta-connect-point">Unable to find someone to design or develop a proper solution according to your brand's vision?</p>
+            <a href="quote.html" class="cta-connect-link">Connect with us &gt;</a>
           </div>
           <div class="cta-connect-graphic">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                   <path d="M20 80 L50 20 L80 80 L65 80 L65 60 L35 60 L35 80 Z" fill="var(--white-1)" stroke="#ccc" stroke-width="1"/>
-                   <path d="M50 20 L65 60 L35 60 Z" fill="rgba(255, 255, 255, 0.7)"/>
-                 </svg>
+            <img src="assets\images\arrow4.png" alt="CTA Graphic" width="445" height="390">
           </div>
-             <a href="quote.html" class="btn cta-connect-button">LET'S CONNECT</a>
+              <!-- Replace with the actual SVG paths from the URL -->
+            </svg>
+          </div>
+          <button class="cta-connect-button" onclick="window.location.href='quote.html'">Let's<br>Connect</button>
         </div>
-      </section>
+<!-- Add the new navigation links -->
+<nav class="cta-connect-nav">
+  <ul class="cta-connect-nav-list">
+    <li><a href="index.html#home" class="cta-connect-nav-link">Home</a></li>
+    <li><a href="index.html#about" class="cta-connect-nav-link">About</a></li>
+    <li><a href="index.html#service" class="cta-connect-nav-link">Services</a></li>
+    <li><a href="index.html#project" class="cta-connect-nav-link">Projects</a></li>
+  </ul>
+</nav>
+</div>
+</section>
 
-          <ul class="contact-list">
-            <li class="contact-item">
-              <div class="contact-card">
-                <div class="card-icon"><ion-icon name="mail-open-outline" aria-hidden="true"></ion-icon></div>
-                <div class="card-content">
-                  <h3 class="h3 card-title">Email Us</h3>
-                  <a href="mailto:info@electrixel.co.za" class="card-link">info@electrixel.co.za</a>
-                  <a href="mailto:support@electrixel.co.za" class="card-link"></a>
-                </div>
-              </div>
-            </li>
-            <li class="contact-item">
-              <div class="contact-card">
-                <div class="card-icon"><ion-icon name="map-outline" aria-hidden="true"></ion-icon></div>
-                <div class="card-content">
-                  <h3 class="h3 card-title">Visit Us</h3>
-                  <address class="card-address">=<br><br></address>
-                </div>
-              </div>
-            </li>
-            <li class="contact-item">
-              <div class="contact-card">
-                <div class="card-icon"><ion-icon name="call-outline" aria-hidden="true"></ion-icon></div>
-                <div class="card-content">
-                  <h3 class="h3 card-title">Call Us</h3>
-                  <a href="tel:+27608868940" class="card-link">+27 60 886 8940</a>
-                  <a href="tel:+27112345678" class="card-link"></a>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-    </article>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
-      <p class="copyright">
-        &copy; <span id="current-year">2025</span> All Rights Reserved by <a href="#home" class="copyright-link">Electrixel</a>.
-      </p>
-    </div>
-  </footer>
+<footer class="footer">
+  <div class="container">
+    <ul class="social-links">
+      <li>
+        <a href="https://instagram.com/electrixel.sa" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-instagram"></i>
+          <span>Instagram</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-facebook-f"></i>
+          <span>Facebook</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://linkedin.com/company/electrixel" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-linkedin-in"></i>
+          <span>LinkedIn</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</footer>
 
   <a href="#top" aria-label="Back to top" data-back-top-btn class="back-top-btn">
     <ion-icon name="chevron-up-outline" aria-hidden="true"></ion-icon>
